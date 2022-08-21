@@ -2,11 +2,6 @@ import { mergeValues } from './merge.js'
 import { shouldSkipProp, shouldSetValue } from './skip.js'
 
 // Merge error properties.
-// Just like `Object.assign()`:
-//  - Inherited or non-enumerable properties are ignored
-//  - Symbol properties are not ignored
-// New values are always configurable and writable.
-//  - But top-level `error.*` remain the same
 // If `error.*` is an inherited property and it is overridden, its top value
 // becomes an own property, preventing prototype pollution.
 // Error core properties are never overridden.
@@ -40,6 +35,9 @@ const isAnyObject = function (props) {
   return typeof props === 'object' && props !== null
 }
 
+// Just like `Object.assign()`:
+//  - Inherited or non-enumerable properties are ignored
+//  - Symbol properties are not ignored
 // We always deep merge and do not provide a `shallow` option.
 //  - Error properties should not be removed nor overridden as they contain
 //    useful information

@@ -9,6 +9,8 @@ const CORE_ERROR_PROPS = new Set([
   'stack',
   'cause',
   'errors',
+  ...Reflect.ownKeys(Error.prototype),
+  ...Reflect.ownKeys(Object.prototype),
 ])
 
 const { propertyIsEnumerable: isEnum } = Object.prototype

@@ -51,13 +51,17 @@ test('Inherited properties are considered not plain objects deeply', (t) => {
 })
 
 test('Cannot pollute prototypes at the top level', (t) => {
-  const {
-    constructor: { name },
-    __proto__,
-  } = setProps({}, { name: 'test', constructor: { name: 'test' } })
-  t.is(name, 'test')
-  t.not(__proto__.name, 'test')
-  t.not(__proto__.constructor.name, 'test')
+  const error = setProps(
+    {},
+    { name: 'test', toString: () => 'test', constructor: { name: 'test' } },
+  )
+  const proto = Object.getPrototypeOf(error)
+  const values = [error, proto]
+  values.forEach((value) => {
+    t.not(value.toString(), 'test')
+    t.not(value.name, 'test')
+    t.not(value.constructor.name, 'test')
+  })
 })
 
 test('Cannot pollute prototypes deeply', (t) => {
@@ -69,4 +73,13 @@ test('Cannot pollute prototypes deeply', (t) => {
   )
   t.deepEqual(deep, { two: true })
   t.is(__proto__.deep, undefined)
+})
+
+test('Cannot override non-Error prototypes at the top level', (t) => {
+  // eslint-disable-next-line fp/no-class
+  class TestError extends Error {}
+  // eslint-disable-next-line fp/no-mutation
+  TestError.prototype.prop = 'proto'
+  t.is(setDirectProps(new TestError('test'), { prop: 'test' }).prop, 'test')
+  t.is(TestError.prototype.prop, 'proto')
 })
