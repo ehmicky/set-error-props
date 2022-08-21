@@ -15,7 +15,7 @@ Properly update an error's properties.
 - Merges with either high or [low priority](#low-priority-merging)
 - [Copies](#error-copy) another error's properties
 - Strict, deep [TypeScript typing](/src/main.d.ts) of the return value
-- [Never throws](#exception-safety)
+- Handles [invalid errors](#invalid-errors)
 
 # Examples
 
@@ -70,20 +70,16 @@ console.log(error.message) // 'one'
 console.log(error.prop) // true
 ```
 
-## Exception safety
+## Invalid errors
 
-<!-- eslint-disable fp/no-mutating-methods -->
-
-```js
-const error = new Error('one')
-Object.defineProperty(error, 'nonWritable', { value: true, writable: false })
-setErrorProps(error, { nonWritable: false })
-console.log(error.nonWritable) // true
-```
+<!-- eslint-disable no-throw-literal -->
 
 ```js
-// Does not throw even though the arguments are invalid
-setErrorProps('', '')
+try {
+  throw 'not_an_error_instance'
+} catch (error) {
+  setErrorProps(error, { prop: true }) // Converted to an error instance
+}
 ```
 
 # Install
