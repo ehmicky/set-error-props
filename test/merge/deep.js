@@ -46,10 +46,12 @@ test('Sets non-plain objects deeply', (t) => {
 
 test('Merges non-plain objects at the top level', (t) => {
   t.deepEqual(
-    setProps(
-      { one: true, three: true },
-      { two: true, three: false, __proto__: {} },
-    ),
+    {
+      ...setProps(
+        { one: true, three: true },
+        { two: true, three: false, __proto__: {} },
+      ),
+    },
     { one: true, two: true, three: false },
   )
 })
@@ -58,8 +60,7 @@ test('Merges errors at the top level', (t) => {
   t.deepEqual(
     {
       ...setProps(
-        // eslint-disable-next-line fp/no-mutating-assign
-        Object.assign(new Error('test'), { one: true, three: true }),
+        { one: true, three: true },
         // eslint-disable-next-line fp/no-mutating-assign
         Object.assign(new Error('test'), { two: true, three: false }),
       ),

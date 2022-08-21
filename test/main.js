@@ -1,7 +1,9 @@
+import { runInNewContext } from 'vm'
+
 import test from 'ava'
 import { each } from 'test-each'
 
-import { setProps } from './helpers/main.js'
+import { setProps, setDirectProps } from './helpers/main.js'
 
 // eslint-disable-next-line unicorn/no-null
 each([undefined, null, ''], ({ title }, invalidValue) => {
@@ -10,7 +12,19 @@ each([undefined, null, ''], ({ title }, invalidValue) => {
   })
 
   test(`Is a noop if the second argument is invalid | ${title}`, (t) => {
-    t.deepEqual(setProps({}, invalidValue), {})
+    t.not(setProps({}, invalidValue), invalidValue)
+  })
+})
+
+test('Is a noop if the first argument is not an error', (t) => {
+  t.true(setDirectProps({ prop: true }, { prop: false }).prop)
+})
+
+each([Error, runInNewContext('Error')], ({ title }, ErrorClass) => {
+  test(`Is not a noop if the first argument is an error | ${title}`, (t) => {
+    // eslint-disable-next-line fp/no-mutating-assign
+    const error = Object.assign(new ErrorClass('test'), { prop: true })
+    t.false(setDirectProps(error, { prop: false }).prop)
   })
 })
 
@@ -37,12 +51,13 @@ test('Inherited properties are considered not plain objects deeply', (t) => {
 })
 
 test('Cannot pollute prototypes at the top level', (t) => {
-  const { deep, __proto__ } = setProps(
-    { __proto__: { deep: { one: true } } },
-    { deep: { two: true } },
-  )
-  t.deepEqual(deep, { one: true, two: true })
-  t.deepEqual(__proto__.deep, { one: true })
+  const {
+    constructor: { name },
+    __proto__,
+  } = setProps({}, { name: 'test', constructor: { name: 'test' } })
+  t.is(name, 'test')
+  t.not(__proto__.name, 'test')
+  t.not(__proto__.constructor.name, 'test')
 })
 
 test('Cannot pollute prototypes deeply', (t) => {

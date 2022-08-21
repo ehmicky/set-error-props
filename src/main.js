@@ -20,7 +20,7 @@ export default function setErrorProps(
   props,
   { lowPriority = false } = {},
 ) {
-  if (!isAnyObject(error) || !isAnyObject(props)) {
+  if (!isError(error) || !isAnyObject(props)) {
     return
   }
 
@@ -30,8 +30,14 @@ export default function setErrorProps(
   }
 }
 
-const isAnyObject = function (value) {
-  return typeof value === 'object' && value !== null
+const isError = function (error) {
+  return objectToString.call(error) === '[object Error]'
+}
+
+const { toString: objectToString } = Object.prototype
+
+const isAnyObject = function (props) {
+  return typeof props === 'object' && props !== null
 }
 
 // We always deep merge and do not provide a `shallow` option.

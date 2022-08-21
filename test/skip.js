@@ -1,7 +1,7 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { setProps } from './helpers/main.js'
+import { setProps, setDirectProps } from './helpers/main.js'
 
 const getFullError = function () {
   // eslint-disable-next-line fp/no-mutating-assign
@@ -14,13 +14,18 @@ each(
     test(`Does not set core properties at the top level | ${title}`, (t) => {
       const error = getFullError()
       const value = error[corePropName]
-      t.is(setProps(error, { [corePropName]: false })[corePropName], value)
+      t.is(
+        setDirectProps(error, { [corePropName]: false })[corePropName],
+        value,
+      )
     })
 
     test(`Sets core properties deeply | ${title}`, (t) => {
       const error = getFullError()
       t.true(
-        setProps(error, { deep: { [corePropName]: true } }).deep[corePropName],
+        setDirectProps(error, { deep: { [corePropName]: true } }).deep[
+          corePropName
+        ],
       )
     })
   },
@@ -45,37 +50,38 @@ test('Non-enumerable properties are included deeply when not merged', (t) => {
 })
 
 test('Handle non-writable properties', (t) => {
+  const error = new Error('test')
   // eslint-disable-next-line fp/no-mutating-methods
-  const nonWritableObject = Object.defineProperty({}, 'prop', {
+  const nonWritableObject = Object.defineProperty(error, 'prop', {
     value: true,
     enumerable: true,
     writable: false,
     configurable: true,
   })
-  t.true(setProps(nonWritableObject, { prop: false }).prop)
+  t.true(setDirectProps(nonWritableObject, { prop: false }).prop)
 })
 
 const getProxyObject = function () {
-  return {
-    changed: false,
-    // eslint-disable-next-line fp/no-get-set
-    get prop() {
+  const error = new Error('test')
+  error.changed = false
+  // eslint-disable-next-line fp/no-mutating-methods
+  return Object.defineProperty(error, 'prop', {
+    get() {
       return 'prop'
     },
-    // eslint-disable-next-line fp/no-get-set
-    set prop(value) {
+    set(value) {
       // eslint-disable-next-line fp/no-mutation, fp/no-this
       this.changed = value
     },
-  }
+  })
 }
 
 test('Sets value is different', (t) => {
-  t.true(setProps(getProxyObject(), { prop: true }).changed)
+  t.true(setDirectProps(getProxyObject(), { prop: true }).changed)
 })
 
 test('Does not set value is identical', (t) => {
-  t.false(setProps(getProxyObject(), { prop: 'prop' }).changed)
+  t.false(setDirectProps(getProxyObject(), { prop: 'prop' }).changed)
 })
 
 test('Sets undefined if high priority', (t) => {
