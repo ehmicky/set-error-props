@@ -1,14 +1,24 @@
-// Merge error properties, shallowly, with parent error having priority
-// Do not merge inherited properties nor non-enumerable properties.
-// Works with symbol properties.
-export default function setErrorProps(error, props) {
+// Merge error properties.
+// Just like `Object.assign()`:
+//  - Inherited or non-enumerable properties are ignored
+//  - Symbol properties are not ignored
+// Descriptors are kept.
+// Error core properties are never overridden.
+// `props` can either be a plain object or another error instance.
+// `error` is directly modified.
+// This never throws.
+export default function setErrorProps(
+  error,
+  props,
+  { override = true, shallow = false } = {},
+) {
   // eslint-disable-next-line fp/no-loops
   for (const propName of Reflect.ownKeys(props)) {
-    mergeProp(error, props, propName)
+    mergeProp({ error, props, propName, override, shallow })
   }
 }
 
-const mergeProp = function (error, props, propName) {
+const mergeProp = function ({ error, props, propName }) {
   if (propName in error) {
     return
   }
@@ -21,7 +31,6 @@ const mergeProp = function (error, props, propName) {
   }
 }
 
-// Do not copy core error properties.
 // Does not assume they are not enumerable.
 const CORE_ERROR_PROPS = new Set([
   'name',
