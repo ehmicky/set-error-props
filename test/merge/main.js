@@ -1,7 +1,7 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { setProps } from './helpers/main.js'
+import { setProps } from '../helpers/main.js'
 
 const hasProp = function (prop, propName) {
   return typeof prop === 'object' && prop !== null && propName in prop
