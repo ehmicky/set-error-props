@@ -12,7 +12,8 @@ expectAssignable<Error>(setErrorProps(error, {}))
 
 setErrorProps(error, error)
 setErrorProps(error, {})
-expectError(setErrorProps({}, error))
+setErrorProps({}, error)
+setErrorProps(undefined, error)
 
 setErrorProps(error, {}, {})
 expectAssignable<Options>({})

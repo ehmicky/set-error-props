@@ -100,11 +100,13 @@ not `require()`.
 
 ## setErrorProps(error, props, options?)
 
-`error` `Error`\
+`error` `Error | unknown`\
 `props` `Error | object`\
-`options` [`Options?`](#options)
+`options` [`Options?`](#options)\
+_Return value_: `Error`
 
-Assign `props` to `error`.
+Assigns `props` to `error`, then returns `error`. If `error` is not an `Error`
+instance, it is converted to one.
 
 ### Options
 
