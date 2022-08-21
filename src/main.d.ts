@@ -15,7 +15,7 @@ export interface Options {
    * console.log(error.prop) // { one: true, two: true }
    * ```
    */
-  readonly shallow?: boolean
+  readonly lowPriority?: boolean
 }
 
 /**
