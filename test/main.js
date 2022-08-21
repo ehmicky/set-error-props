@@ -35,21 +35,3 @@ test('Inherited properties are considered not plain objects deeply', (t) => {
   t.true(deep.one)
   t.false('two' in deep)
 })
-
-// eslint-disable-next-line fp/no-mutating-methods
-const nonEnumerableProps = Object.defineProperty({}, 'prop', {
-  value: true,
-  enumerable: false,
-})
-
-test('Non-enumerable properties are ignored at the top level', (t) => {
-  t.false('prop' in setProps({}, nonEnumerableProps))
-})
-
-test('Non-enumerable properties are ignored deeply when merged', (t) => {
-  t.false('prop' in setProps({ deep: {} }, { deep: nonEnumerableProps }).deep)
-})
-
-test('Non-enumerable properties are included deeply when not merged', (t) => {
-  t.true('prop' in setProps({}, { deep: nonEnumerableProps }).deep)
-})
