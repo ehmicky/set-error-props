@@ -11,10 +11,10 @@ Properly update an error's properties.
 - Prevents overriding [error core properties](#error-core-properties) (`name`,
   `message`, etc.)
 - Protects against [prototype pollution](#prototype-pollution)
-- [Deep merging](#deep-merging)
-- Merge with either high or [low priority](#low-priority-merging)
-- [Copy](#error-copy) another error's properties
-- [Exception-safe](#exception-safety): this never throws
+- [Merges deeply](#deep-merging)
+- Merges with either high or [low priority](#low-priority-merging)
+- [Copies](#error-copy) another error's properties
+- [Never throws](#exception-safety)
 
 # Examples
 
