@@ -35,3 +35,23 @@ test('Inherited properties are considered not plain objects deeply', (t) => {
   t.true(deep.one)
   t.false('two' in deep)
 })
+
+test('Cannot pollute prototypes at the top level', (t) => {
+  const { deep, __proto__ } = setProps(
+    { __proto__: { deep: { one: true } } },
+    { deep: { two: true } },
+  )
+  t.deepEqual(deep, { one: true, two: true })
+  t.deepEqual(__proto__.deep, { one: true })
+})
+
+test('Cannot pollute prototypes deeply', (t) => {
+  const {
+    prop: { deep, __proto__ },
+  } = setProps(
+    { prop: { __proto__: { deep: { one: true } } } },
+    { prop: { deep: { two: true } } },
+  )
+  t.deepEqual(deep, { two: true })
+  t.is(__proto__.deep, undefined)
+})

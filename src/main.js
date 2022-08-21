@@ -15,7 +15,6 @@ import { shouldSkipProp, shouldSetValue } from './skip.js'
 // Deep merging does not recurse on non-plain objects.
 //  - However, the top-level arguments can be non-plain object.
 // This never throws, since it is likely to be inside some error handling logic.
-//  - Errors lead to noop
 export default function setErrorProps(
   error,
   props,
