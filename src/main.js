@@ -1,5 +1,4 @@
-import deepMerge from 'deepmerge'
-import isPlainObj from 'is-plain-obj'
+import { mergeValues } from './merge.js'
 
 // Merge error properties.
 // Just like `Object.assign()`:
@@ -70,26 +69,6 @@ const CORE_ERROR_PROPS = new Set([
 ])
 
 const { propertyIsEnumerable: isEnum } = Object.prototype
-
-const mergeValues = function (errorValue, propsValue, lowPriority) {
-  if (!shouldMergeValues(errorValue, propsValue)) {
-    return lowPriority ? errorValue : propsValue
-  }
-
-  return lowPriority
-    ? deepMerge(propsValue, errorValue, DEEP_MERGE_OPTS)
-    : deepMerge(errorValue, propsValue, DEEP_MERGE_OPTS)
-}
-
-const shouldMergeValues = function (errorValue, propsValue) {
-  return isArrayOrObject(errorValue) && isArrayOrObject(propsValue)
-}
-
-const isArrayOrObject = function (value) {
-  return isPlainObj(value) || Array.isArray(value)
-}
-
-const DEEP_MERGE_OPTS = { isMergeableObject: isPlainObj }
 
 // `undefined` values are set, since `propName in error` might be `false`, but
 // only if `lowPriority` is `false`.
