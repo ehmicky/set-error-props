@@ -44,8 +44,8 @@ const mergeProp = function ({ error, props, propName, lowPriority }) {
     return
   }
 
-  const propsValue = props[propName]
   const errorValue = error[propName]
+  const propsValue = props[propName]
   const mergedValue = mergeValues(errorValue, propsValue, lowPriority)
 
   if (!shouldSetValue(errorValue, mergedValue, lowPriority)) {
