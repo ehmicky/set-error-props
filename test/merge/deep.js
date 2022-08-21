@@ -16,7 +16,7 @@ test('Concatenate arrays in reverse in low priority', (t) => {
 test('Merges plain objects', (t) => {
   t.deepEqual(
     setProps(
-      { prop: { one: true, three: true } },
+      { prop: { one: true, three: 0 } },
       { prop: { two: true, three: false } },
     ).prop,
     { one: true, two: true, three: false },
@@ -37,7 +37,7 @@ test('Merges plain objects in low priority', (t) => {
 test('Sets non-plain objects deeply', (t) => {
   t.deepEqual(
     setProps(
-      { prop: { one: true, three: true } },
+      { prop: { one: true, three: '' } },
       { prop: { two: true, three: false, __proto__: {} } },
     ).prop,
     { two: true, three: false },
