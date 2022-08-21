@@ -14,6 +14,7 @@ Properly update an error's properties.
 - [Merges deeply](#deep-merging)
 - Merges with either high or [low priority](#low-priority-merging)
 - [Copies](#error-copy) another error's properties
+- Strict, deep [TypeScript typing](/src/main.d.ts) of the return value
 - [Never throws](#exception-safety)
 
 # Examples
