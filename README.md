@@ -50,7 +50,6 @@ console.log(error.prop) // { one: [true, false], two: true }
 ## Low priority merging
 
 ```js
-// Deep merges plain objects and arrays
 const error = new Error('message')
 error.prop = { one: true }
 setErrorProps(error, { prop: { one: false, two: true } }, { lowPriority: true })
