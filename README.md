@@ -6,14 +6,84 @@
 
 Properly update an error's properties.
 
-Work in progress!
-
 # Features
 
-# Example
+- Prevents overriding [error core properties](#error-core-properties) (`name`,
+  `message`, etc.)
+- Protects against [prototype pollution](#prototype-pollution)
+- [Deep merging](#deep-merging)
+- Merge with either high or [low priority](#low-priority-merging)
+- [Copy](#error-copy) another error's properties
+- [Exception-safe](#exception-safety): this never throws
+
+# Examples
+
+## Error core properties
 
 ```js
 import setErrorProps from 'set-error-props'
+
+const error = new Error('one')
+setErrorProps(error, { message: 'two' })
+console.log(error.message) // 'one'
+```
+
+## Prototype pollution
+
+```js
+const error = new Error('one')
+setErrorProps(error, { toString: () => 'injected' })
+console.log(error.toString()) // 'Error: one'
+console.log(Error.prototype.toString()) // 'Error'
+```
+
+## Deep merging
+
+```js
+// Deep merges plain objects and arrays
+const error = new Error('message')
+error.prop = { one: [true] }
+setErrorProps(error, { prop: { one: [false], two: true } })
+console.log(error.prop) // { one: [true, false], two: true }
+```
+
+## Low priority merging
+
+```js
+// Deep merges plain objects and arrays
+const error = new Error('message')
+error.prop = { one: true }
+setErrorProps(error, { prop: { one: false, two: true } }, { lowPriority: true })
+console.log(error.prop) // { one: true, two: true }
+```
+
+## Error copy
+
+<!-- eslint-disable fp/no-mutation -->
+
+```js
+const error = new Error('one')
+const secondError = new Error('two')
+secondError.prop = true
+setErrorProps(error, secondError)
+console.log(error.message) // 'one'
+console.log(error.prop) // tru
+```
+
+## Exception safety
+
+<!-- eslint-disable fp/no-mutating-methods -->
+
+```js
+const error = new Error('one')
+Object.defineProperty(error, 'nonWritable', { value: true, writable: false })
+setErrorProps(error, { nonWritable: false })
+console.log(error.nonWritable) // true
+```
+
+```js
+// Does not throw even though the arguments are invalid
+setErrorProps('', '')
 ```
 
 # Install
@@ -28,19 +98,24 @@ not `require()`.
 
 # API
 
-## setErrorProps(value, options?)
+## setErrorProps(error, props, options?)
 
-`value` `any`\
-`options` [`Options?`](#options)\
-_Return value_: [`object`](#return-value)
+`error` `Error`\
+`props` `Error | object`\
+`options` [`Options?`](#options)
+
+Assign `props` to `error`.
 
 ### Options
 
-Object with the following properties.
+Optional object with the following properties.
 
-### Return value
+#### lowPriority
 
-Object with the following properties.
+_Type_: `boolean`\
+_Default_: `false`
+
+Whether `props` should have higher merging priority over `error` or not.
 
 # Related projects
 

@@ -3,7 +3,7 @@
  */
 export interface Options {
   /**
-   *
+   * @default false
    */
   readonly shallow?: boolean
 }

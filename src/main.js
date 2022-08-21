@@ -2,14 +2,6 @@ import { mergeValues } from './merge.js'
 import { shouldSkipProp, shouldSetValue } from './skip.js'
 
 // Merge error properties.
-// If `error.*` is an inherited property and it is overridden, its top value
-// becomes an own property, preventing prototype pollution.
-// Error core properties are never overridden.
-// `props` can either be a plain object or another error instance.
-// `error` is directly modified.
-// Deep merging does not recurse on non-plain objects.
-//  - However, the top-level arguments can be non-plain object.
-// This never throws, since it is likely to be inside some error handling logic.
 export default function setErrorProps(
   error,
   props,
