@@ -1,3 +1,11 @@
+# 1.1.0
+
+## Features
+
+- Normalize and return `error`
+- Validate arguments
+- Improve TypeScript types
+
 # 1.0.1
 
 ## Bug fixes
