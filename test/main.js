@@ -7,8 +7,7 @@ import { each } from 'test-each'
 import { setProps, getError } from './helpers/main.js'
 
 // eslint-disable-next-line unicorn/no-null
-const NOT_OBJECTS = [undefined, null, '']
-each([...NOT_OBJECTS, {}], ({ title }, notError) => {
+each([undefined, null, '', {}], ({ title }, notError) => {
   test(`Normalizes the first argument if not an error | ${title}`, (t) => {
     t.true(setErrorProps(notError, {}) instanceof Error)
   })
@@ -27,12 +26,6 @@ test('Mutates the first argument', (t) => {
   t.true(error.prop)
 })
 
-each(NOT_OBJECTS, ({ title }, invalidValue) => {
-  test(`Is a noop if the second argument is invalid | ${title}`, (t) => {
-    t.not(setProps({}, invalidValue), invalidValue)
-  })
-})
-
 const symbol = Symbol('test')
 
 test('Symbol properties can be set', (t) => {
@@ -43,16 +36,22 @@ test('Symbol properties can be set deeply', (t) => {
   t.true(setProps({}, { deep: { [symbol]: true } }).deep[symbol])
 })
 
-const inheritedProps = { __proto__: { one: true } }
+// eslint-disable-next-line fp/no-class
+class TestError extends Error {}
+// eslint-disable-next-line fp/no-mutation
+TestError.prototype.prop = true
 
 test('Inherited properties are ignored at the top level', (t) => {
-  t.false('one' in setProps({}, inheritedProps))
+  t.false('prop' in setProps({}, new TestError('test')))
 })
 
 test('Inherited properties are considered not plain objects deeply', (t) => {
-  const { deep } = setProps({ deep: { two: true } }, { deep: inheritedProps })
-  t.true(deep.one)
-  t.false('two' in deep)
+  const { deep } = setProps(
+    { deep: { one: true } },
+    { deep: new TestError('test') },
+  )
+  t.true(deep.prop)
+  t.false('one' in deep)
 })
 
 test('Cannot pollute prototypes at the top level', (t) => {
@@ -81,10 +80,6 @@ test('Cannot pollute prototypes deeply', (t) => {
 })
 
 test('Cannot override non-Error prototypes at the top level', (t) => {
-  // eslint-disable-next-line fp/no-class
-  class TestError extends Error {}
-  // eslint-disable-next-line fp/no-mutation
-  TestError.prototype.prop = 'proto'
-  t.is(setErrorProps(new TestError('test'), { prop: 'test' }).prop, 'test')
-  t.is(TestError.prototype.prop, 'proto')
+  t.false(setErrorProps(new TestError('test'), { prop: false }).prop)
+  t.true(TestError.prototype.prop)
 })

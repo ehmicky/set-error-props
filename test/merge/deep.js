@@ -51,18 +51,6 @@ test('Sets non-plain objects deeply', (t) => {
   )
 })
 
-test('Merges non-plain objects at the top level', (t) => {
-  t.deepEqual(
-    {
-      ...setProps(
-        { one: true, three: true },
-        { two: true, three: false, __proto__: {} },
-      ),
-    },
-    { one: true, two: true, three: false },
-  )
-})
-
 test('Merges errors at the top level', (t) => {
   t.deepEqual(
     {
