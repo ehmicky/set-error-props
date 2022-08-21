@@ -1,4 +1,5 @@
 import { mergeValues } from './merge.js'
+import { shouldSkipProp, shouldSetValue } from './skip.js'
 
 // Merge error properties.
 // Just like `Object.assign()`:
@@ -54,26 +55,4 @@ const mergeProp = function ({ error, props, propName, lowPriority }) {
   try {
     error[propName] = mergedValue
   } catch {}
-}
-
-const shouldSkipProp = function (props, propName) {
-  return CORE_ERROR_PROPS.has(propName) || !isEnum.call(props, propName)
-}
-
-const CORE_ERROR_PROPS = new Set([
-  'name',
-  'message',
-  'stack',
-  'cause',
-  'errors',
-])
-
-const { propertyIsEnumerable: isEnum } = Object.prototype
-
-// `undefined` values are set, since `propName in error` might be `false`, but
-// only if `lowPriority` is `false`.
-const shouldSetValue = function (errorValue, mergedValue, lowPriority) {
-  return (
-    errorValue !== mergedValue || (mergedValue === undefined && !lowPriority)
-  )
 }
