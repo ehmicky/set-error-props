@@ -114,7 +114,7 @@ Optional object with the following properties.
 _Type_: `boolean`\
 _Default_: `false`
 
-Whether `props` should have higher merging priority over `error` or not.
+Whether `props` should have lower merging priority over `error` or not.
 
 # Related projects
 

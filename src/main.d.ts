@@ -3,7 +3,7 @@
  */
 export interface Options {
   /**
-   * Whether `props` should have higher merging priority over `error` or not.
+   * Whether `props` should have lower merging priority over `error` or not.
    *
    * @default false
    *
