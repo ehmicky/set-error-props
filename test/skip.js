@@ -2,12 +2,7 @@ import test from 'ava'
 import setErrorProps from 'set-error-props'
 import { each } from 'test-each'
 
-import { setProps } from './helpers/main.js'
-
-const getFullError = function () {
-  // eslint-disable-next-line fp/no-mutating-assign
-  return Object.assign(new Error('test'), { cause: true, errors: [] })
-}
+import { setProps, getFullError } from './helpers/main.js'
 
 each(
   ['name', 'message', 'stack', 'cause', 'errors'],
