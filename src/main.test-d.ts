@@ -1,8 +1,22 @@
-import { expectType, expectAssignable } from 'tsd'
+import {
+  expectType,
+  expectAssignable,
+  expectNotAssignable,
+  expectError,
+} from 'tsd'
 
 import setErrorProps, { Options } from './main.js'
 
-expectType<object>(setErrorProps(true))
+expectType<void>(setErrorProps({}, {}))
 
-setErrorProps(true, {})
+const error = new Error('test')
+setErrorProps(error, error)
+setErrorProps(error, {})
+setErrorProps({}, error)
+
+setErrorProps({}, {}, {})
 expectAssignable<Options>({})
+setErrorProps({}, {}, { shallow: true })
+expectAssignable<Options>({ shallow: true })
+expectError(setErrorProps({}, {}, { shallow: 'true' }))
+expectNotAssignable<Options>({ shallow: 'true' })

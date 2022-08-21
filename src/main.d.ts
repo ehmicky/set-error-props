@@ -1,7 +1,12 @@
 /**
  * `set-error-props` options
  */
-export interface Options {}
+export interface Options {
+  /**
+   *
+   */
+  readonly shallow?: boolean
+}
 
 /**
  *
@@ -9,4 +14,8 @@ export interface Options {}
  * ```js
  * ```
  */
-export default function setErrorProps(value: any, options?: Options): object
+export default function setErrorProps(
+  error: Error | {},
+  props: Error | {},
+  options?: Options,
+): void
