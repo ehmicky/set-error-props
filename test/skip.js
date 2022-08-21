@@ -5,20 +5,28 @@ import { each } from 'test-each'
 import { setProps, getFullError } from './helpers/main.js'
 
 each(
-  ['name', 'message', 'stack', 'cause', 'errors'],
-  ({ title }, corePropName) => {
+  [
+    { propName: 'name', value: 'TestError' },
+    { propName: 'message', value: 'test' },
+    { propName: 'stack', value: 'test' },
+    { propName: 'cause', value: new Error('cause') },
+    { propName: 'errors', value: [new Error('test')] },
+  ],
+  ({ title }, { propName, value }) => {
     test(`Does not set core properties at the top level | ${title}`, (t) => {
       const error = getFullError()
-      const value = error[corePropName]
-      t.is(setErrorProps(error, { [corePropName]: false })[corePropName], value)
+      const oldValue = error[propName]
+      t.deepEqual(
+        setErrorProps(error, { [propName]: value })[propName],
+        oldValue,
+      )
     })
 
     test(`Sets core properties deeply | ${title}`, (t) => {
       const error = getFullError()
-      t.true(
-        setErrorProps(error, { deep: { [corePropName]: true } }).deep[
-          corePropName
-        ],
+      t.is(
+        setErrorProps(error, { deep: { [propName]: value } }).deep[propName],
+        value,
       )
     })
   },

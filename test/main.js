@@ -7,25 +7,17 @@ import { each } from 'test-each'
 import { setProps, getError } from './helpers/main.js'
 
 // eslint-disable-next-line unicorn/no-null
-each([undefined, null, ''], ({ title }, invalidValue) => {
-  test(`Is a noop if the first argument is invalid | ${title}`, (t) => {
-    t.notThrows(setProps.bind(undefined, invalidValue, {}))
+const NOT_OBJECTS = [undefined, null, '']
+each([...NOT_OBJECTS, {}], ({ title }, notError) => {
+  test(`Normalizes the first argument if not an error | ${title}`, (t) => {
+    t.true(setErrorProps(notError, {}) instanceof Error)
   })
-
-  test(`Is a noop if the second argument is invalid | ${title}`, (t) => {
-    t.not(setProps({}, invalidValue), invalidValue)
-  })
-})
-
-test('Is a noop if the first argument is not an error', (t) => {
-  t.true(setErrorProps({ prop: true }, { prop: false }).prop)
 })
 
 each([Error, runInNewContext('Error')], ({ title }, ErrorClass) => {
-  test(`Is not a noop if the first argument is an error | ${title}`, (t) => {
-    // eslint-disable-next-line fp/no-mutating-assign
-    const error = Object.assign(new ErrorClass('test'), { prop: true })
-    t.false(setErrorProps(error, { prop: false }).prop)
+  test(`Returns the first argument as is if is a valid error | ${title}`, (t) => {
+    const error = new ErrorClass('test')
+    t.is(setErrorProps(error, {}), error)
   })
 })
 
@@ -33,6 +25,12 @@ test('Mutates the first argument', (t) => {
   const error = getError({})
   setErrorProps(error, { prop: true })
   t.true(error.prop)
+})
+
+each(NOT_OBJECTS, ({ title }, invalidValue) => {
+  test(`Is a noop if the second argument is invalid | ${title}`, (t) => {
+    t.not(setProps({}, invalidValue), invalidValue)
+  })
 })
 
 const symbol = Symbol('test')

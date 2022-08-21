@@ -1,3 +1,5 @@
+import normalizeException from 'normalize-exception'
+
 import { mergeValues } from './merge.js'
 import { shouldSkipProp, shouldSetValue } from './skip.js'
 
@@ -7,23 +9,19 @@ export default function setErrorProps(
   props,
   { lowPriority = false } = {},
 ) {
-  if (!isError(error) || !isAnyObject(props)) {
-    return error
+  const errorA = normalizeException(error)
+
+  if (!isAnyObject(props)) {
+    return errorA
   }
 
   // eslint-disable-next-line fp/no-loops
   for (const propName of Reflect.ownKeys(props)) {
-    mergeProp({ error, props, propName, lowPriority })
+    mergeProp({ error: errorA, props, propName, lowPriority })
   }
 
-  return error
+  return errorA
 }
-
-const isError = function (error) {
-  return objectToString.call(error) === '[object Error]'
-}
-
-const { toString: objectToString } = Object.prototype
 
 const isAnyObject = function (props) {
   return typeof props === 'object' && props !== null

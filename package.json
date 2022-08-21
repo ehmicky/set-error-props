@@ -47,7 +47,8 @@
   },
   "dependencies": {
     "deepmerge": "^4.2.2",
-    "is-plain-obj": "^4.1.0"
+    "is-plain-obj": "^4.1.0",
+    "normalize-exception": "^2.2.0"
   },
   "devDependencies": {
     "@ehmicky/dev-tasks": "^1.0.85",

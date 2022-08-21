@@ -5,7 +5,7 @@ export const setProps = function (object, props, opts) {
 }
 
 export const getFullError = function (object) {
-  return getError({ cause: true, errors: [], ...object })
+  return getError({ cause: new Error('test'), errors: [], ...object })
 }
 
 export const getError = function (object) {
