@@ -8,13 +8,15 @@ export default function setErrorProps(
   { lowPriority = false } = {},
 ) {
   if (!isError(error) || !isAnyObject(props)) {
-    return
+    return error
   }
 
   // eslint-disable-next-line fp/no-loops
   for (const propName of Reflect.ownKeys(props)) {
     mergeProp({ error, props, propName, lowPriority })
   }
+
+  return error
 }
 
 const isError = function (error) {

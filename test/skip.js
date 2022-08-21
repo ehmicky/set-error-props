@@ -1,7 +1,8 @@
 import test from 'ava'
+import setErrorProps from 'set-error-props'
 import { each } from 'test-each'
 
-import { setProps, setDirectProps } from './helpers/main.js'
+import { setProps } from './helpers/main.js'
 
 const getFullError = function () {
   // eslint-disable-next-line fp/no-mutating-assign
@@ -14,16 +15,13 @@ each(
     test(`Does not set core properties at the top level | ${title}`, (t) => {
       const error = getFullError()
       const value = error[corePropName]
-      t.is(
-        setDirectProps(error, { [corePropName]: false })[corePropName],
-        value,
-      )
+      t.is(setErrorProps(error, { [corePropName]: false })[corePropName], value)
     })
 
     test(`Sets core properties deeply | ${title}`, (t) => {
       const error = getFullError()
       t.true(
-        setDirectProps(error, { deep: { [corePropName]: true } }).deep[
+        setErrorProps(error, { deep: { [corePropName]: true } }).deep[
           corePropName
         ],
       )
@@ -58,7 +56,7 @@ test('Handle non-writable properties', (t) => {
     writable: false,
     configurable: true,
   })
-  t.true(setDirectProps(nonWritableObject, { prop: false }).prop)
+  t.true(setErrorProps(nonWritableObject, { prop: false }).prop)
 })
 
 const getProxyObject = function () {
@@ -77,11 +75,11 @@ const getProxyObject = function () {
 }
 
 test('Sets value is different', (t) => {
-  t.true(setDirectProps(getProxyObject(), { prop: true }).changed)
+  t.true(setErrorProps(getProxyObject(), { prop: true }).changed)
 })
 
 test('Does not set value is identical', (t) => {
-  t.false(setDirectProps(getProxyObject(), { prop: 'prop' }).changed)
+  t.false(setErrorProps(getProxyObject(), { prop: 'prop' }).changed)
 })
 
 test('Sets undefined if high priority', (t) => {

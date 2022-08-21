@@ -1,9 +1,10 @@
 import { runInNewContext } from 'vm'
 
 import test from 'ava'
+import setErrorProps from 'set-error-props'
 import { each } from 'test-each'
 
-import { setProps, setDirectProps } from './helpers/main.js'
+import { setProps } from './helpers/main.js'
 
 // eslint-disable-next-line unicorn/no-null
 each([undefined, null, ''], ({ title }, invalidValue) => {
@@ -17,14 +18,14 @@ each([undefined, null, ''], ({ title }, invalidValue) => {
 })
 
 test('Is a noop if the first argument is not an error', (t) => {
-  t.true(setDirectProps({ prop: true }, { prop: false }).prop)
+  t.true(setErrorProps({ prop: true }, { prop: false }).prop)
 })
 
 each([Error, runInNewContext('Error')], ({ title }, ErrorClass) => {
   test(`Is not a noop if the first argument is an error | ${title}`, (t) => {
     // eslint-disable-next-line fp/no-mutating-assign
     const error = Object.assign(new ErrorClass('test'), { prop: true })
-    t.false(setDirectProps(error, { prop: false }).prop)
+    t.false(setErrorProps(error, { prop: false }).prop)
   })
 })
 
@@ -80,6 +81,6 @@ test('Cannot override non-Error prototypes at the top level', (t) => {
   class TestError extends Error {}
   // eslint-disable-next-line fp/no-mutation
   TestError.prototype.prop = 'proto'
-  t.is(setDirectProps(new TestError('test'), { prop: 'test' }).prop, 'test')
+  t.is(setErrorProps(new TestError('test'), { prop: 'test' }).prop, 'test')
   t.is(TestError.prototype.prop, 'proto')
 })
