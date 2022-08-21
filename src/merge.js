@@ -20,4 +20,8 @@ const isArrayOrObject = function (value) {
   return isPlainObj(value) || Array.isArray(value)
 }
 
-const DEEP_MERGE_OPTS = { isMergeableObject: isPlainObj }
+const isMergeableObject = function (value) {
+  return isPlainObj(value) || Array.isArray(value)
+}
+
+const DEEP_MERGE_OPTS = { isMergeableObject }

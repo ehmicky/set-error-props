@@ -13,6 +13,13 @@ test('Concatenate arrays in reverse in low priority', (t) => {
   )
 })
 
+test('Concatenate arrays deeply', (t) => {
+  t.deepEqual(
+    setProps({ deep: { prop: [0] } }, { deep: { prop: [1] } }).deep.prop,
+    [0, 1],
+  )
+})
+
 test('Merges plain objects', (t) => {
   t.deepEqual(
     setProps(

@@ -67,7 +67,7 @@ const secondError = new Error('two')
 secondError.prop = true
 setErrorProps(error, secondError)
 console.log(error.message) // 'one'
-console.log(error.prop) // tru
+console.log(error.prop) // true
 ```
 
 ## Exception safety
