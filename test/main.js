@@ -4,7 +4,7 @@ import test from 'ava'
 import setErrorProps from 'set-error-props'
 import { each } from 'test-each'
 
-import { setProps } from './helpers/main.js'
+import { setProps, getError } from './helpers/main.js'
 
 // eslint-disable-next-line unicorn/no-null
 each([undefined, null, ''], ({ title }, invalidValue) => {
@@ -27,6 +27,12 @@ each([Error, runInNewContext('Error')], ({ title }, ErrorClass) => {
     const error = Object.assign(new ErrorClass('test'), { prop: true })
     t.false(setErrorProps(error, { prop: false }).prop)
   })
+})
+
+test('Mutates the first argument', (t) => {
+  const error = getError({})
+  setErrorProps(error, { prop: true })
+  t.true(error.prop)
 })
 
 const symbol = Symbol('test')
