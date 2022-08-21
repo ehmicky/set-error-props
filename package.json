@@ -45,7 +45,10 @@
     "lib": "src",
     "test": "test"
   },
-  "dependencies": {},
+  "dependencies": {
+    "deepmerge": "^4.2.2",
+    "is-plain-obj": "^4.1.0"
+  },
   "devDependencies": {
     "@ehmicky/dev-tasks": "^1.0.85"
   },
