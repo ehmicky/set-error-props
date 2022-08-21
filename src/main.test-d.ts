@@ -7,16 +7,16 @@ import {
 
 import setErrorProps, { Options } from './main.js'
 
-expectType<void>(setErrorProps({}, {}))
-
 const error = new Error('test')
+expectType<void>(setErrorProps(error, {}))
+
 setErrorProps(error, error)
 setErrorProps(error, {})
-setErrorProps({}, error)
+expectError(setErrorProps({}, error))
 
-setErrorProps({}, {}, {})
+setErrorProps(error, {}, {})
 expectAssignable<Options>({})
-setErrorProps({}, {}, { shallow: true })
+setErrorProps(error, {}, { shallow: true })
 expectAssignable<Options>({ shallow: true })
-expectError(setErrorProps({}, {}, { shallow: 'true' }))
+expectError(setErrorProps(error, {}, { shallow: 'true' }))
 expectNotAssignable<Options>({ shallow: 'true' })

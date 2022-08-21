@@ -15,7 +15,7 @@ export interface Options {
  * ```
  */
 export default function setErrorProps(
-  error: Error | {},
+  error: Error,
   props: Error | {},
   options?: Options,
 ): void
