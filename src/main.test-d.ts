@@ -1,8 +1,8 @@
 import { expectType, expectAssignable } from 'tsd'
 
-import templateName, { Options } from './main.js'
+import setErrorProps, { Options } from './main.js'
 
-expectType<object>(templateName(true))
+expectType<object>(setErrorProps(true))
 
-templateName(true, {})
+setErrorProps(true, {})
 expectAssignable<Options>({})

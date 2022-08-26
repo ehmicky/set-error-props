@@ -1,10 +1,10 @@
-[![Codecov](https://img.shields.io/codecov/c/github/ehmicky/template-name.svg?label=tested&logo=codecov)](https://codecov.io/gh/ehmicky/template-name)
+[![Codecov](https://img.shields.io/codecov/c/github/ehmicky/set-error-props.svg?label=tested&logo=codecov)](https://codecov.io/gh/ehmicky/set-error-props)
 [![TypeScript](https://img.shields.io/badge/-typed-brightgreen?logo=typescript&colorA=gray&logoColor=0096ff)](/src/main.d.ts)
-[![Node](https://img.shields.io/node/v/template-name.svg?logo=node.js&logoColor=66cc33)](https://www.npmjs.com/package/template-name)
+[![Node](https://img.shields.io/node/v/set-error-props.svg?logo=node.js&logoColor=66cc33)](https://www.npmjs.com/package/set-error-props)
 [![Twitter](https://img.shields.io/badge/%E2%80%8B-twitter-brightgreen.svg?logo=twitter)](https://twitter.com/intent/follow?screen_name=ehmicky)
 [![Medium](https://img.shields.io/badge/%E2%80%8B-medium-brightgreen.svg?logo=medium)](https://medium.com/@ehmicky)
 
-template-description.
+Properly update an error's properties.
 
 Work in progress!
 
@@ -13,13 +13,13 @@ Work in progress!
 # Example
 
 ```js
-import templateName from 'template-name'
+import setErrorProps from 'set-error-props'
 ```
 
 # Install
 
 ```bash
-npm install template-name
+npm install set-error-props
 ```
 
 This package is an ES module and must be loaded using
@@ -28,7 +28,7 @@ not `require()`.
 
 # API
 
-## templateName(value, options?)
+## setErrorProps(value, options?)
 
 `value` `any`\
 `options` [`Options?`](#options)\
@@ -68,6 +68,6 @@ If you would like to help us fix a bug or add a new feature, please check our
 <!-- ALL-CONTRIBUTORS-LIST:START -->
 <!-- prettier-ignore -->
 <!--
-<table><tr><td align="center"><a href="https://twitter.com/ehmicky"><img src="https://avatars2.githubusercontent.com/u/8136211?v=4" width="100px;" alt="ehmicky"/><br /><sub><b>ehmicky</b></sub></a><br /><a href="https://github.com/ehmicky/template-name/commits?author=ehmicky" title="Code">💻</a> <a href="#design-ehmicky" title="Design">🎨</a> <a href="#ideas-ehmicky" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/ehmicky/template-name/commits?author=ehmicky" title="Documentation">📖</a></td></tr></table>
+<table><tr><td align="center"><a href="https://twitter.com/ehmicky"><img src="https://avatars2.githubusercontent.com/u/8136211?v=4" width="100px;" alt="ehmicky"/><br /><sub><b>ehmicky</b></sub></a><br /><a href="https://github.com/ehmicky/set-error-props/commits?author=ehmicky" title="Code">💻</a> <a href="#design-ehmicky" title="Design">🎨</a> <a href="#ideas-ehmicky" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/ehmicky/set-error-props/commits?author=ehmicky" title="Documentation">📖</a></td></tr></table>
  -->
 <!-- ALL-CONTRIBUTORS-LIST:END -->
