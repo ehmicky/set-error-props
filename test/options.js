@@ -1,4 +1,5 @@
 import test from 'ava'
+import setErrorProps from 'set-error-props'
 import { each } from 'test-each'
 
 import { setProps } from './helpers/main.js'
@@ -6,6 +7,10 @@ import { setProps } from './helpers/main.js'
 // eslint-disable-next-line unicorn/no-null
 const NOT_PLAIN_OBJECTS = [null, '', new Set([])]
 each([...NOT_PLAIN_OBJECTS, undefined], ({ title }, invalidValue) => {
+  test(`Throws if the first argument is invalid | ${title}`, (t) => {
+    t.throws(setErrorProps.bind(undefined, invalidValue, {}))
+  })
+
   test(`Throws if the second argument is invalid | ${title}`, (t) => {
     t.throws(setProps.bind(undefined, {}, invalidValue))
   })

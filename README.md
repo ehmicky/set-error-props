@@ -15,7 +15,6 @@ Properly update an error's properties.
 - Merges with either high or [low priority](#low-priority-merging)
 - [Copies](#error-copy) another error's properties
 - Strict, deep [TypeScript typing](/src/main.d.ts) of the return value
-- Handles [invalid errors](#invalid-errors)
 
 # Examples
 
@@ -70,18 +69,6 @@ console.log(error.message) // 'one'
 console.log(error.prop) // true
 ```
 
-## Invalid errors
-
-<!-- eslint-disable no-throw-literal -->
-
-```js
-try {
-  throw 'not_an_error_instance'
-} catch (error) {
-  setErrorProps(error, { prop: true }) // Converted to an error instance
-}
-```
-
 # Install
 
 ```bash
@@ -96,13 +83,12 @@ not `require()`.
 
 ## setErrorProps(error, props, options?)
 
-`error` `Error | unknown`\
+`error` `Error | object`\
 `props` `Error | object`\
 `options` [`Options?`](#options)\
 _Return value_: `Error`
 
-Assigns `props` to `error`, then returns `error`. If `error` is not an `Error`
-instance, it is converted to one.
+Assigns `props` to `error`, then returns `error`.
 
 ### Options
 

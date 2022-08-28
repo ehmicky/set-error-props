@@ -6,18 +6,15 @@ import { each } from 'test-each'
 
 import { setProps, getError } from './helpers/main.js'
 
-// eslint-disable-next-line unicorn/no-null
-each([undefined, null, '', {}], ({ title }, notError) => {
-  test(`Normalizes the first argument if not an error | ${title}`, (t) => {
-    t.true(setErrorProps(notError, {}) instanceof Error)
-  })
-})
-
 each([Error, runInNewContext('Error')], ({ title }, ErrorClass) => {
-  test(`Returns the first argument as is if is a valid error | ${title}`, (t) => {
+  test(`Returns the first argument as is | ${title}`, (t) => {
     const error = new ErrorClass('test')
     t.is(setErrorProps(error, {}), error)
   })
+})
+
+test('Allow the first argument to be a plain object', (t) => {
+  t.true(setErrorProps({}, { prop: true }).prop)
 })
 
 test('Mutates the first argument', (t) => {

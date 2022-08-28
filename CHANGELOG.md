@@ -1,3 +1,14 @@
+# 2.0.0
+
+## Breaking changes
+
+- The `error` is not normalized anymore
+
+## Features
+
+- The first argument can now be a plain object
+- Improve prototype pollution check
+
 # 1.1.0
 
 ## Features

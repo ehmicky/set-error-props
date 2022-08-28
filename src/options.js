@@ -3,8 +3,9 @@ import isPlainObj from 'is-plain-obj'
 // Normalize and validate `props` and `options`.
 // Invalid `error` are normalized but do not throw since they might be outside
 // of the user's control, unlike `props` and `options`.
-export const normalizeOptions = function (props, opts = {}) {
-  validateProps(props)
+export const normalizeOptions = function (error, props, opts = {}) {
+  validateErrorOrObject(error, 'First argument')
+  validateErrorOrObject(props, 'Second argument')
 
   if (!isPlainObj(opts)) {
     throw new TypeError(`Options must be a plain object: ${opts}`)
@@ -21,16 +22,20 @@ export const normalizeOptions = function (props, opts = {}) {
   return { lowPriority }
 }
 
-const validateProps = function (props) {
-  if (props === undefined) {
-    throw new TypeError('Second argument is required')
+const validateErrorOrObject = function (value, prefix) {
+  if (value === undefined) {
+    throw new TypeError(`${prefix} is required.`)
   }
 
-  if (!isPlainObj(props) && !isError(props)) {
+  if (!isErrorOrObject(value)) {
     throw new TypeError(
-      `Second argument must be a plain object or an error: ${props}`,
+      `${prefix} must be a plain object or an error: ${value}`,
     )
   }
+}
+
+const isErrorOrObject = function (value) {
+  return isPlainObj(value) || isError(value)
 }
 
 const isError = function (props) {

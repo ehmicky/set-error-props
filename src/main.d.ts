@@ -72,8 +72,6 @@ type CoreErrorProps =
   | 'valueOf'
   | 'toLocaleString'
 
-type NormalizeError<ErrorArg> = ErrorArg extends Error ? ErrorArg : Error
-
 /**
  * Assigns `props` to `error`.
  *
@@ -86,22 +84,18 @@ type NormalizeError<ErrorArg> = ErrorArg extends Error ? ErrorArg : Error
  * ```
  */
 export default function setErrorProps<
-  ErrorArg,
+  ErrorArg extends object,
   Props extends object,
   OptionsArg extends Options,
 >(
   error: ErrorArg,
   props: Props,
   options?: OptionsArg,
-): Error &
-  Pick<
-    NormalizeError<ErrorArg>,
-    CoreErrorProps & keyof NormalizeError<ErrorArg>
-  > &
+): Pick<ErrorArg, CoreErrorProps & keyof ErrorArg> &
   Omit<
     DeepMergeWithPriority<
       Props,
-      NormalizeError<ErrorArg>,
+      ErrorArg,
       OptionsArg['lowPriority'] extends true ? true : false
     >,
     CoreErrorProps
