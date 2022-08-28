@@ -4,8 +4,19 @@ import { each } from 'test-each'
 
 import { setProps } from './helpers/main.js'
 
-// eslint-disable-next-line unicorn/no-null
-const NOT_PLAIN_OBJECTS = [null, '', new Set([])]
+const NOT_PLAIN_OBJECTS = [
+  // eslint-disable-next-line unicorn/no-null
+  null,
+  '',
+  new Set([]),
+  () => {},
+  {
+    // eslint-disable-next-line fp/no-get-set
+    get unsafe() {
+      throw new Error('unsafe')
+    },
+  },
+]
 each([...NOT_PLAIN_OBJECTS, undefined], ({ title }, invalidValue) => {
   test(`Throws if the first argument is invalid | ${title}`, (t) => {
     t.throws(setErrorProps.bind(undefined, invalidValue, {}))

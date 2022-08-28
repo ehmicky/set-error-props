@@ -2,36 +2,37 @@ import test from 'ava'
 import setErrorProps from 'set-error-props'
 import { each } from 'test-each'
 
-import { setProps, getFullError } from './helpers/main.js'
+import { setProps } from './helpers/main.js'
 
 each(
   [
-    { propName: 'name', value: 'TestError' },
-    { propName: 'message', value: 'test' },
-    { propName: 'stack', value: 'test' },
-    { propName: 'cause', value: new Error('cause') },
-    { propName: 'errors', value: [new Error('test')] },
+    'name',
+    'message',
+    'stack',
+    'errors',
+    'prototype',
+    'constructor',
+    '__proto__',
+    'toString',
+    'toLocaleString',
+    'hasOwnProperty',
+    'isPrototypeOf',
+    'propertyIsEnumerable',
+    'valueOf',
   ],
-  ({ title }, { propName, value }) => {
-    test(`Does not set core properties at the top level | ${title}`, (t) => {
-      const error = getFullError()
-      const oldValue = error[propName]
-      t.deepEqual(
-        setErrorProps(error, { [propName]: value })[propName],
-        oldValue,
-      )
+  ({ title }, propName) => {
+    test(`Ignore some properties at the top level | ${title}`, (t) => {
+      t.not(setErrorProps({}, { [propName]: true })[propName], true)
     })
 
-    test(`Sets core properties deeply | ${title}`, (t) => {
-      const error = getFullError()
-      t.is(
-        setErrorProps(error, { deep: { [propName]: value } }).deep[propName],
-        value,
+    test(`Ignore some properties deeply | ${title}`, (t) => {
+      t.not(
+        setErrorProps({}, { deep: { [propName]: true } }).deep[propName],
+        true,
       )
     })
   },
 )
-
 // eslint-disable-next-line fp/no-mutating-methods
 const nonEnumerableProps = Object.defineProperty({}, 'prop', {
   value: true,
