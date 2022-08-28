@@ -25,8 +25,8 @@ each(
       t.not(setErrorProps({}, { [propName]: true })[propName], true)
     })
 
-    test(`Ignore some properties deeply | ${title}`, (t) => {
-      t.not(
+    test(`Does not ignore some properties deeply | ${title}`, (t) => {
+      t.is(
         setErrorProps({}, { deep: { [propName]: true } }).deep[propName],
         true,
       )

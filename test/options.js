@@ -10,12 +10,6 @@ const NOT_PLAIN_OBJECTS = [
   '',
   new Set([]),
   () => {},
-  {
-    // eslint-disable-next-line fp/no-get-set
-    get unsafe() {
-      throw new Error('unsafe')
-    },
-  },
 ]
 each([...NOT_PLAIN_OBJECTS, undefined], ({ title }, invalidValue) => {
   test(`Throws if the first argument is invalid | ${title}`, (t) => {
