@@ -11,20 +11,20 @@ export interface Options {
    * ```js
    * const error = new Error('message')
    * error.prop = { one: true }
-   * setErrorProps(error, { prop: { one: false, two: true } }, { lowPriority: true })
+   * setErrorProps(error, { prop: { one: false, two: true } }, { soft: true })
    * console.log(error.prop) // { one: true, two: true }
    * ```
    */
-  readonly lowPriority?: boolean
+  readonly soft?: boolean
 }
 
 type DeepMergeObjects<
   One extends object,
   Two extends object,
-  LowPriority extends boolean,
+  soft extends boolean,
 > = {
   [oneKey in keyof One]: oneKey extends keyof Two
-    ? DeepMerge<One[oneKey], Two[oneKey], LowPriority>
+    ? DeepMerge<One[oneKey], Two[oneKey], soft>
     : One[oneKey]
 } & {
   [twoKey in Exclude<keyof Two, keyof One>]: Two[twoKey]
@@ -33,19 +33,19 @@ type DeepMergeObjects<
 type DeepMergeObjectsOrArrays<
   One extends object,
   Two extends object,
-  LowPriority extends boolean,
+  soft extends boolean,
 > = One extends any[]
   ? Two extends any[]
     ? [...One, ...Two]
-    : DeepMergeObjects<One, Two, LowPriority>
-  : DeepMergeObjects<One, Two, LowPriority>
+    : DeepMergeObjects<One, Two, soft>
+  : DeepMergeObjects<One, Two, soft>
 
-type DeepMerge<One, Two, LowPriority extends boolean> = Two extends object
+type DeepMerge<One, Two, soft extends boolean> = Two extends object
   ? One extends object
-    ? DeepMergeObjectsOrArrays<One, Two, LowPriority>
+    ? DeepMergeObjectsOrArrays<One, Two, soft>
     : Two
   : Two extends undefined
-  ? LowPriority extends true
+  ? soft extends true
     ? One
     : Two
   : Two
@@ -53,8 +53,8 @@ type DeepMerge<One, Two, LowPriority extends boolean> = Two extends object
 type DeepMergeWithPriority<
   Props,
   ErrorArg,
-  LowPriority extends boolean | undefined,
-> = LowPriority extends true
+  soft extends boolean | undefined,
+> = soft extends true
   ? DeepMerge<Props, ErrorArg, true>
   : DeepMerge<ErrorArg, Props, false>
 
@@ -96,7 +96,7 @@ export default function setErrorProps<
     DeepMergeWithPriority<
       Props,
       ErrorArg,
-      OptionsArg['lowPriority'] extends true ? true : false
+      OptionsArg['soft'] extends true ? true : false
     >,
     CoreErrorProps
   >

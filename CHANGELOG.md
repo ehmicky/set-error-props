@@ -3,6 +3,7 @@
 ## Breaking changes
 
 - The `error` is not normalized anymore
+- Rename `lowPriority` option to [`soft`](README.md#soft)
 
 ## Features
 

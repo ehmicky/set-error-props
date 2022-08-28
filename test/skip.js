@@ -90,5 +90,5 @@ test('Sets undefined if high priority', (t) => {
 })
 
 test('Does not set undefined if low priority', (t) => {
-  t.false('prop' in setProps({}, { prop: undefined }, { lowPriority: true }))
+  t.false('prop' in setProps({}, { prop: undefined }, { soft: true }))
 })

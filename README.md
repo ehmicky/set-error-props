@@ -52,7 +52,7 @@ console.log(error.prop) // { one: [true, false], two: true }
 ```js
 const error = new Error('message')
 error.prop = { one: true }
-setErrorProps(error, { prop: { one: false, two: true } }, { lowPriority: true })
+setErrorProps(error, { prop: { one: false, two: true } }, { soft: true })
 console.log(error.prop) // { one: true, two: true }
 ```
 
@@ -94,7 +94,7 @@ Assigns `props` to `error`, then returns `error`.
 
 Optional object with the following properties.
 
-#### lowPriority
+#### soft
 
 _Type_: `boolean`\
 _Default_: `false`

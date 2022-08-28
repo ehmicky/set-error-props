@@ -11,15 +11,13 @@ export const normalizeOptions = function (error, props, opts = {}) {
     throw new TypeError(`Options must be a plain object: ${opts}`)
   }
 
-  const { lowPriority = false } = opts
+  const { soft = false } = opts
 
-  if (typeof lowPriority !== 'boolean') {
-    throw new TypeError(
-      `Option "lowPriority" must be a boolean: ${lowPriority}`,
-    )
+  if (typeof soft !== 'boolean') {
+    throw new TypeError(`Option "soft" must be a boolean: ${soft}`)
   }
 
-  return { lowPriority }
+  return { soft }
 }
 
 const validateErrorOrObject = function (value, prefix) {

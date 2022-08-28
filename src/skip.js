@@ -17,9 +17,7 @@ const CHECK_ERROR = new Error('check')
 const IGNORED_PROPS = new Set(['prototype', 'errors', 'cause'])
 
 // `undefined` values are set, since `propName in error` might be `false`, but
-// only if `lowPriority` is `false`.
-export const shouldSetValue = function (errorValue, mergedValue, lowPriority) {
-  return (
-    errorValue !== mergedValue || (mergedValue === undefined && !lowPriority)
-  )
+// only if `soft` is `false`.
+export const shouldSetValue = function (errorValue, mergedValue, soft) {
+  return errorValue !== mergedValue || (mergedValue === undefined && !soft)
 }

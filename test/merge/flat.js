@@ -33,8 +33,8 @@ each([undefined, ...SIMPLE_VALUES], ({ title }, value) => {
 
   test(`Keeps if setting a simple value in low priority | ${title}`, (t) => {
     t.true(
-      setProps({ prop: { one: true } }, { prop: value }, { lowPriority: true })
-        .prop.one,
+      setProps({ prop: { one: true } }, { prop: value }, { soft: true }).prop
+        .one,
     )
   })
 })
@@ -44,7 +44,7 @@ each(SIMPLE_VALUES, ({ title }, value) => {
     const { prop } = setProps(
       { prop: value },
       { prop: { one: true } },
-      { lowPriority: true },
+      { soft: true },
     )
     t.is(prop, value)
     t.false(hasProp(prop, 'one'))
@@ -53,9 +53,7 @@ each(SIMPLE_VALUES, ({ title }, value) => {
 
 each([{}, { prop: undefined }], ({ title }, error) => {
   test(`Merges if merging to a simple value in low priority to undefined | ${title}`, (t) => {
-    t.true(
-      setProps(error, { prop: { one: true } }, { lowPriority: true }).prop.one,
-    )
+    t.true(setProps(error, { prop: { one: true } }, { soft: true }).prop.one)
   })
 })
 
@@ -69,7 +67,7 @@ test('Keeps if setting objects when merged to arrays in low priority', (t) => {
   const { prop } = setProps(
     { prop: [true] },
     { prop: { one: true } },
-    { lowPriority: true },
+    { soft: true },
   )
   t.true(prop[0])
   t.false(hasProp(prop, 'one'))
@@ -81,7 +79,7 @@ test('Sets objects when merged to arrays', (t) => {
 
 test('Keeps if setting arrays when merged to objects in low priority', (t) => {
   t.true(
-    setProps({ prop: { one: true } }, { prop: [true] }, { lowPriority: true })
-      .prop.one,
+    setProps({ prop: { one: true } }, { prop: [true] }, { soft: true }).prop
+      .one,
   )
 })

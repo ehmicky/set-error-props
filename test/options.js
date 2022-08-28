@@ -22,6 +22,6 @@ each(NOT_PLAIN_OBJECTS, ({ title }, invalidValue) => {
   })
 })
 
-test('Throws if the "lowPriority" is invalid', (t) => {
-  t.throws(setProps.bind(undefined, {}, {}, { lowPriority: 'true' }))
+test('Throws if the "soft" is invalid', (t) => {
+  t.throws(setProps.bind(undefined, {}, {}, { soft: 'true' }))
 })
