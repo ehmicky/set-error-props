@@ -127,6 +127,8 @@ Whether `props` should have lower merging priority over `error` or not.
   errors to/from plain objects
 - [`normalize-exception`](https://github.com/ehmicky/normalize-exception):
   Normalize exceptions/errors
+- [`set-error-class`](https://github.com/ehmicky/set-error-class): Properly
+  update an error's class
 - [`set-error-message`](https://github.com/ehmicky/set-error-message): Properly
   update an error's message
 - [`merge-error-cause`](https://github.com/ehmicky/merge-error-cause): Merge an
