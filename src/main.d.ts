@@ -10,9 +10,10 @@ export interface Options {
    * @example
    * ```js
    * const error = new Error('message')
-   * error.prop = { one: true }
-   * setErrorProps(error, { prop: { one: false, two: true } }, { soft: true })
-   * console.log(error.prop) // { one: true, two: true }
+   * error.one = true
+   * setErrorProps(error, { one: false, two: true }, { soft: true })
+   * console.log(error.one) // true
+   * console.log(error.two) // true
    * ```
    */
   readonly soft?: boolean
