@@ -18,45 +18,21 @@ export interface Options {
   readonly soft?: boolean
 }
 
-type DeepMergeObjects<
+type MergeObjects<
   One extends object,
   Two extends object,
   soft extends boolean,
 > = {
-  [oneKey in keyof One]: oneKey extends keyof Two
-    ? DeepMerge<One[oneKey], Two[oneKey], soft>
+  [oneKey in Exclude<keyof One, keyof Two>]: One[oneKey] extends undefined
+    ? oneKey extends keyof Two
+      ? soft extends false
+        ? Two[oneKey]
+        : One[oneKey]
+      : One[oneKey]
     : One[oneKey]
 } & {
-  [twoKey in Exclude<keyof Two, keyof One>]: Two[twoKey]
+  [twoKey in keyof Two]: Two[twoKey]
 }
-
-type DeepMergeObjectsOrArrays<
-  One extends object,
-  Two extends object,
-  soft extends boolean,
-> = One extends any[]
-  ? Two extends any[]
-    ? [...One, ...Two]
-    : DeepMergeObjects<One, Two, soft>
-  : DeepMergeObjects<One, Two, soft>
-
-type DeepMerge<One, Two, soft extends boolean> = Two extends object
-  ? One extends object
-    ? DeepMergeObjectsOrArrays<One, Two, soft>
-    : Two
-  : Two extends undefined
-  ? soft extends true
-    ? One
-    : Two
-  : Two
-
-type DeepMergeWithPriority<
-  Props,
-  ErrorArg,
-  soft extends boolean | undefined,
-> = soft extends true
-  ? DeepMerge<Props, ErrorArg, true>
-  : DeepMerge<ErrorArg, Props, false>
 
 type CoreErrorProps =
   | 'name'
@@ -93,10 +69,8 @@ export default function setErrorProps<
   options?: OptionsArg,
 ): Pick<ErrorArg, CoreErrorProps & keyof ErrorArg> &
   Omit<
-    DeepMergeWithPriority<
-      Props,
-      ErrorArg,
-      OptionsArg['soft'] extends true ? true : false
-    >,
+    OptionsArg['soft'] extends true
+      ? MergeObjects<Props, ErrorArg, true>
+      : MergeObjects<ErrorArg, Props, false>,
     CoreErrorProps
   >
