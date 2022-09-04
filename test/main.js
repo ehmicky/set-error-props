@@ -23,14 +23,23 @@ test('Mutates the first argument', (t) => {
   t.true(error.prop)
 })
 
+test('Sets properties on top level errors', (t) => {
+  t.deepEqual(
+    {
+      ...setProps(
+        { one: true, three: true },
+        // eslint-disable-next-line fp/no-mutating-assign
+        Object.assign(new Error('test'), { two: true, three: false }),
+      ),
+    },
+    { one: true, two: true, three: false },
+  )
+})
+
 const symbol = Symbol('test')
 
 test('Symbol properties can be set', (t) => {
   t.true(setProps({}, { [symbol]: true })[symbol])
-})
-
-test('Symbol properties can be set deeply', (t) => {
-  t.true(setProps({}, { deep: { [symbol]: true } }).deep[symbol])
 })
 
 // eslint-disable-next-line fp/no-class
@@ -38,20 +47,11 @@ class TestError extends Error {}
 // eslint-disable-next-line fp/no-mutation
 TestError.prototype.prop = true
 
-test('Inherited properties are ignored at the top level', (t) => {
+test('Inherited properties are ignored', (t) => {
   t.false('prop' in setProps({}, new TestError('test')))
 })
 
-test('Inherited properties are considered not plain objects deeply', (t) => {
-  const { deep } = setProps(
-    { deep: { one: true } },
-    { deep: new TestError('test') },
-  )
-  t.true(deep.prop)
-  t.false('one' in deep)
-})
-
-test('Cannot pollute prototypes at the top level', (t) => {
+test('Cannot pollute prototypes', (t) => {
   const error = setProps(
     {},
     { name: 'test', toString: () => 'test', constructor: { name: 'test' } },
@@ -65,18 +65,7 @@ test('Cannot pollute prototypes at the top level', (t) => {
   })
 })
 
-test('Cannot pollute prototypes deeply', (t) => {
-  const {
-    prop: { deep, __proto__ },
-  } = setProps(
-    { prop: { __proto__: { deep: { one: true } } } },
-    { prop: { deep: { two: true } } },
-  )
-  t.deepEqual(deep, { two: true })
-  t.is(__proto__.deep, undefined)
-})
-
-test('Cannot override non-Error prototypes at the top level', (t) => {
+test('Cannot override non-Error prototypes', (t) => {
   t.false(setErrorProps(new TestError('test'), { prop: false }).prop)
   t.true(TestError.prototype.prop)
 })

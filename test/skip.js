@@ -21,15 +21,8 @@ each(
     'valueOf',
   ],
   ({ title }, propName) => {
-    test(`Ignore some properties at the top level | ${title}`, (t) => {
+    test(`Ignore some properties | ${title}`, (t) => {
       t.not(setErrorProps({}, { [propName]: true })[propName], true)
-    })
-
-    test(`Does not ignore some properties deeply | ${title}`, (t) => {
-      t.is(
-        setErrorProps({}, { deep: { [propName]: true } }).deep[propName],
-        true,
-      )
     })
   },
 )
@@ -39,16 +32,8 @@ const nonEnumerableProps = Object.defineProperty({}, 'prop', {
   enumerable: false,
 })
 
-test('Non-enumerable properties are ignored at the top level', (t) => {
+test('Non-enumerable properties are ignored', (t) => {
   t.false('prop' in setProps({}, nonEnumerableProps))
-})
-
-test('Non-enumerable properties are ignored deeply when merged', (t) => {
-  t.false('prop' in setProps({ deep: {} }, { deep: nonEnumerableProps }).deep)
-})
-
-test('Non-enumerable properties are included deeply when not merged', (t) => {
-  t.true('prop' in setProps({}, { deep: nonEnumerableProps }).deep)
 })
 
 test('Handle non-writable properties', (t) => {

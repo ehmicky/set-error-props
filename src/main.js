@@ -1,4 +1,3 @@
-import { mergeValues } from './merge.js'
 import { normalizeOptions } from './options.js'
 import { shouldSkipProp, shouldSetValue } from './skip.js'
 
@@ -17,10 +16,10 @@ export default function setErrorProps(error, props, opts) {
 // Just like `Object.assign()`:
 //  - Inherited or non-enumerable properties are ignored
 //  - Symbol properties are not ignored
-// We always deep merge and do not provide a `shallow` option.
-//  - Error properties should not be removed nor overridden as they contain
-//    useful information
-//  - For the same reason, arrays are concatenated
+// We do not deep merge as:
+//  - This ensures the outer error overrides inner errors properties, since
+//    those are likely to be specific to the inner error, e.g. to its class
+//  - Users can deep merge using manual logic instead
 const mergeProp = function ({ error, props, propName, soft }) {
   if (shouldSkipProp(props, propName)) {
     return
@@ -28,13 +27,12 @@ const mergeProp = function ({ error, props, propName, soft }) {
 
   const errorValue = error[propName]
   const propsValue = props[propName]
-  const mergedValue = mergeValues(errorValue, propsValue, soft)
 
-  if (!shouldSetValue(errorValue, mergedValue, soft)) {
+  if (!shouldSetValue(errorValue, propsValue, soft)) {
     return
   }
 
   try {
-    error[propName] = mergedValue
+    error[propName] = propsValue
   } catch {}
 }
