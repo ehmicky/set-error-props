@@ -1,3 +1,9 @@
+# 3.0.0
+
+## Breaking changes
+
+- Remove deep merging
+
 # 2.0.0
 
 ## Breaking changes
