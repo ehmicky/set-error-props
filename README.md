@@ -11,10 +11,9 @@ Properly update an error's properties.
 - Prevents overriding [error core properties](#error-core-properties) (`name`,
   `message`, etc.)
 - Protects against [prototype pollution](#prototype-pollution)
-- [Merges deeply](#deep-merging)
 - Merges with either high or [low priority](#low-priority-merging)
 - [Copies](#error-copy) another error's properties
-- Strict, deep [TypeScript typing](/src/main.d.ts) of the return value
+- Strict [TypeScript typing](/src/main.d.ts) of the return value
 
 # Examples
 
@@ -37,23 +36,14 @@ console.log(error.toString()) // 'Error: one'
 console.log(Error.prototype.toString()) // 'Error'
 ```
 
-## Deep merging
-
-```js
-// Deep merges plain objects and arrays
-const error = new Error('message')
-error.prop = { one: [true] }
-setErrorProps(error, { prop: { one: [false], two: true } })
-console.log(error.prop) // { one: [true, false], two: true }
-```
-
 ## Low priority merging
 
 ```js
 const error = new Error('message')
-error.prop = { one: true }
-setErrorProps(error, { prop: { one: false, two: true } }, { soft: true })
-console.log(error.prop) // { one: true, two: true }
+error.one = true
+setErrorProps(error, { one: false, two: true }, { soft: true })
+console.log(error.one) // true
+console.log(error.two) // true
 ```
 
 ## Error copy
