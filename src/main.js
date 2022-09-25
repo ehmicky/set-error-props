@@ -26,13 +26,22 @@ const mergeProp = function ({ error, props, propName, soft }) {
   }
 
   const errorValue = error[propName]
-  const propsValue = props[propName]
+  const propValue = props[propName]
 
-  if (!shouldSetValue(errorValue, propsValue, soft)) {
+  if (!shouldSetValue(errorValue, propValue, soft)) {
     return
   }
 
   try {
-    error[propName] = propsValue
+    setProp(error, propName, propValue)
   } catch {}
+}
+
+const setProp = function (error, propName, propValue) {
+  if (propValue === undefined) {
+    // eslint-disable-next-line fp/no-delete
+    delete error[propName]
+  } else {
+    error[propName] = propValue
+  }
 }

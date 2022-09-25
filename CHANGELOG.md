@@ -1,3 +1,9 @@
+# 3.1.0
+
+## Features
+
+- Setting an `undefined` value now deletes its key as well
+
 # 3.0.0
 
 ## Breaking changes

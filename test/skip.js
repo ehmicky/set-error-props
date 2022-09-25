@@ -71,10 +71,19 @@ test('Does not set value is identical', (t) => {
   t.false(setErrorProps(getProxyObject(), { prop: 'prop' }).changed)
 })
 
-test('Sets undefined if high priority', (t) => {
-  t.true('prop' in setProps({}, { prop: undefined }))
+each([true, false], ({ title }, soft) => {
+  test(`undefined values are deleted not set | ${title}`, (t) => {
+    t.false('prop' in setProps({}, { prop: undefined }, { soft }))
+  })
 })
 
-test('Does not set undefined if low priority', (t) => {
-  t.false('prop' in setProps({}, { prop: undefined }, { soft: true }))
+test('Delete undefined if high priority', (t) => {
+  t.false('prop' in setProps({ prop: undefined }, { prop: undefined }))
+})
+
+test('Does not delete undefined if low priority', (t) => {
+  t.true(
+    'prop' in
+      setProps({ prop: undefined }, { prop: undefined }, { soft: true }),
+  )
 })
