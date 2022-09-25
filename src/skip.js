@@ -10,6 +10,8 @@ export const shouldSkipProp = function (props, propName) {
 const { propertyIsEnumerable: isEnum } = Object.prototype
 
 // Uses `key in error` to handle any current and future error|object properties
+// This also help handle non-standard properties like `error.lineNumber`
+// (SpiderMonkey) or `error.line` (JavaScriptCore).
 const CHECK_ERROR = new Error('check')
 // Those properties are either optional, set dynamically by `Error` constructor
 // (as opposed to being on the `prototype`) or have special meaning like
