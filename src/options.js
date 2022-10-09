@@ -1,3 +1,4 @@
+import isErrorInstance from 'is-error-instance'
 import isPlainObj from 'is-plain-obj'
 
 // Normalize and validate `props` and `options`.
@@ -33,11 +34,5 @@ const validateErrorOrObject = function (value, prefix) {
 }
 
 const isErrorOrObject = function (value) {
-  return isPlainObj(value) || isError(value)
+  return isPlainObj(value) || isErrorInstance(value)
 }
-
-const isError = function (props) {
-  return objectToString.call(props) === '[object Error]'
-}
-
-const { toString: objectToString } = Object.prototype
