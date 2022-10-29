@@ -1,5 +1,5 @@
 [![Codecov](https://img.shields.io/codecov/c/github/ehmicky/set-error-props.svg?label=tested&logo=codecov)](https://codecov.io/gh/ehmicky/set-error-props)
-[![TypeScript](https://img.shields.io/badge/-typed-brightgreen?logo=typescript&colorA=gray&logoColor=0096ff)](/src/main.d.ts)
+[![TypeScript](https://img.shields.io/badge/-typed-brightgreen?logo=typescript&colorA=gray&logoColor=0096ff)](/types/main.d.ts)
 [![Node](https://img.shields.io/node/v/set-error-props.svg?logo=node.js&logoColor=66cc33)](https://www.npmjs.com/package/set-error-props)
 [![Twitter](https://img.shields.io/badge/%E2%80%8B-twitter-brightgreen.svg?logo=twitter)](https://twitter.com/intent/follow?screen_name=ehmicky)
 [![Medium](https://img.shields.io/badge/%E2%80%8B-medium-brightgreen.svg?logo=medium)](https://medium.com/@ehmicky)
@@ -13,7 +13,7 @@ Properly update an error's properties.
 - Protects against [prototype pollution](#prototype-pollution)
 - Merges with either high or [low priority](#low-priority-merging)
 - [Copies](#error-copy) another error's properties
-- Strict [TypeScript typing](/src/main.d.ts) of the return value
+- Strict [TypeScript typing](/types/main.d.ts) of the return value
 
 # Examples
 
