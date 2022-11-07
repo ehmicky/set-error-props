@@ -5,7 +5,7 @@ import {
   expectError,
 } from 'tsd'
 
-import setErrorProps, { Options } from './main.js'
+import setErrorProps, { Options } from 'set-error-props'
 
 const error = new Error('test')
 expectAssignable<Error>(setErrorProps(error, {}))
