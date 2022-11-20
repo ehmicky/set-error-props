@@ -3,8 +3,10 @@
 // set again.
 // If the property has a `get`/`set`, we assign it directly so those are
 // triggered, and we keep them.
-export const setProp = function ({ error, propName, propValue, descriptor }) {
+export const setProp = function (error, propName, propValue) {
   const enumerable = !isNonEnumerableName(propName)
+
+  const descriptor = getDescriptor(error, propName)
 
   try {
     setValue({ error, propName, propValue, descriptor, enumerable })
@@ -14,6 +16,18 @@ export const setProp = function ({ error, propName, propValue, descriptor }) {
 // Properties starting with _* are not enumerable.
 const isNonEnumerableName = function (propName) {
   return typeof propName === 'string' && propName.startsWith('_')
+}
+
+// Retrieve current descriptor (if any) even on inherited properties
+const getDescriptor = function (value, propName) {
+  const descriptor = Object.getOwnPropertyDescriptor(value, propName)
+
+  if (descriptor !== undefined) {
+    return descriptor
+  }
+
+  const prototype = Object.getPrototypeOf(value)
+  return prototype === null ? undefined : getDescriptor(prototype, propName)
 }
 
 const setValue = function ({
