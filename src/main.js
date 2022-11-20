@@ -1,5 +1,5 @@
 import { normalizeOptions } from './options.js'
-import { shouldSkipProp, shouldSetValue } from './skip.js'
+import { shouldSkipProp, shouldSkipValue } from './skip.js'
 
 // Merge error properties.
 export default function setErrorProps(error, props, opts) {
@@ -28,7 +28,7 @@ const mergeProp = function ({ error, props, propName, soft }) {
   const errorValue = error[propName]
   const propValue = props[propName]
 
-  if (!shouldSetValue(errorValue, propValue, soft)) {
+  if (shouldSkipValue(errorValue, propValue, soft)) {
     return
   }
 
