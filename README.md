@@ -18,6 +18,7 @@ Properly update an error's properties.
 - Can set properties as [non-enumerable](#non-enumerable-properties)
 - Preserves properties [descriptors](#descriptors) (`enumerable`, `writable`,
   `get`/`set`)
+- [Exception-safe](#exception-safety): this only throws syntax errors
 - Strict [TypeScript typing](/types/main.d.ts) of the return value
 
 # Example
@@ -136,6 +137,22 @@ Object.defineProperty(error, 'prop', {
 setErrorProps(error, { prop: true })
 console.log(error.prop) // true
 console.log(Object.getOwnPropertyDescriptor(error, 'prop').enumerable) // false
+```
+
+## Exception safety
+
+<!-- eslint-disable fp/no-proxy -->
+
+```js
+const error = new Proxy(new Error('message'), {
+  set() {
+    throw new Error('example')
+  },
+  defineProperty() {
+    throw new Error('example')
+  },
+})
+setErrorProps(error, { prop: true }) // This does not throw
 ```
 
 # Related projects
