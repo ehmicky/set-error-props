@@ -31,6 +31,14 @@ expectType<1>(setErrorProps({ a: undefined } as const, { a: 1 } as const).a)
 expectType<undefined>(
   setErrorProps({ a: undefined } as const, { a: 1 } as const, { soft: true }).a,
 )
+expectType<undefined>(
+  setErrorProps({ a: undefined } as const, { a: undefined } as const).a,
+)
+expectType<undefined>(
+  setErrorProps({ a: undefined } as const, { a: undefined } as const, {
+    soft: true,
+  }).a,
+)
 expectType<1>(setErrorProps({} as const, { a: 1 } as const).a)
 expectType<1>(setErrorProps({} as const, { a: 1 } as const, { soft: true }).a)
 expectType<undefined>(
