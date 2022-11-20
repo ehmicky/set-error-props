@@ -19,15 +19,9 @@ export interface Options {
   readonly soft?: boolean
 }
 
-type MergeObjects<
-  Low extends object,
-  High extends object,
-  soft extends boolean,
-> = {
+type MergeObjects<Low extends object, High extends object> = {
   [oneKey in Exclude<keyof Low, keyof High>]: oneKey extends keyof High
-    ? soft extends true
-      ? Low[oneKey]
-      : High[oneKey]
+    ? High[oneKey]
     : Low[oneKey]
 } & {
   [twoKey in keyof High]: High[twoKey]
@@ -69,7 +63,7 @@ export default function setErrorProps<
 ): Pick<ErrorArg, CoreErrorProps & keyof ErrorArg> &
   Omit<
     OptionsArg['soft'] extends true
-      ? MergeObjects<Props, ErrorArg, true>
-      : MergeObjects<ErrorArg, Props, false>,
+      ? MergeObjects<Props, ErrorArg>
+      : MergeObjects<ErrorArg, Props>,
     CoreErrorProps
   >
