@@ -77,11 +77,25 @@ const setValue = function ({
     return
   }
 
+  const newDescriptor = {
+    enumerable: enumerable && descriptor.enumerable,
+    configurable: true,
+  }
+
+  if (descriptor.writable === false) {
+    // eslint-disable-next-line fp/no-mutating-methods
+    Object.defineProperty(error, propName, {
+      ...descriptor,
+      ...newDescriptor,
+      value: propValue,
+    })
+    return
+  }
+
   // eslint-disable-next-line fp/no-mutating-methods
   Object.defineProperty(error, propName, {
     ...descriptor,
-    enumerable: enumerable && descriptor.enumerable,
-    configurable: true,
+    ...newDescriptor,
   })
   error[propName] = propValue
 }
