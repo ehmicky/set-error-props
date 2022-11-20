@@ -7,7 +7,7 @@
   by prefixing their name with `_`
 - Properties'
   [descriptors](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor)
-  (`enumerable`, `writable`, `get`/`set`) are now preserved
+  (`enumerable`, `writable`, `configurable`, `get`/`set`) are now preserved
 
 # 3.5.0
 

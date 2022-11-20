@@ -20,7 +20,52 @@ Properly update an error's properties.
   `get`/`set`)
 - Strict [TypeScript typing](/types/main.d.ts) of the return value
 
-# Examples
+# Example
+
+```js
+import setErrorProps from 'set-error-props'
+
+const error = new Error('one')
+setErrorProps(error, { prop: true, message: 'two' })
+console.log(error.prop) // true
+console.log(error.message) // 'one': message is readonly
+```
+
+# Install
+
+```bash
+npm install set-error-props
+```
+
+This package works in both Node.js >=14.18.0 and
+[browsers](https://raw.githubusercontent.com/ehmicky/dev-tasks/main/src/tasks/build/browserslist).
+It is an ES module and must be loaded using
+[an `import` or `import()` statement](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c),
+not `require()`.
+
+# API
+
+## setErrorProps(error, props, options?)
+
+`error` `Error | object`\
+`props` `Error | object`\
+`options` [`Options?`](#options)\
+_Return value_: `Error`
+
+Assigns `props` to `error`, then returns `error`.
+
+### Options
+
+Optional object with the following properties.
+
+#### soft
+
+_Type_: `boolean`\
+_Default_: `false`
+
+Whether `props` should have lower merging priority over `error` or not.
+
+# Usage
 
 ## Error core properties
 
@@ -102,40 +147,6 @@ console.log(error.prop) // true
 console.log(propValue.value) // true
 console.log(Object.getOwnPropertyDescriptor(error, 'prop').enumerable) // false
 ```
-
-# Install
-
-```bash
-npm install set-error-props
-```
-
-This package works in both Node.js >=14.18.0 and
-[browsers](https://raw.githubusercontent.com/ehmicky/dev-tasks/main/src/tasks/build/browserslist).
-It is an ES module and must be loaded using
-[an `import` or `import()` statement](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c),
-not `require()`.
-
-# API
-
-## setErrorProps(error, props, options?)
-
-`error` `Error | object`\
-`props` `Error | object`\
-`options` [`Options?`](#options)\
-_Return value_: `Error`
-
-Assigns `props` to `error`, then returns `error`.
-
-### Options
-
-Optional object with the following properties.
-
-#### soft
-
-_Type_: `boolean`\
-_Default_: `false`
-
-Whether `props` should have lower merging priority over `error` or not.
 
 # Related projects
 
