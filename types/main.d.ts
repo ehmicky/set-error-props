@@ -20,9 +20,7 @@ export interface Options {
 }
 
 type MergeObjects<Low extends object, High extends object> = {
-  [oneKey in Exclude<keyof Low, keyof High>]: oneKey extends keyof High
-    ? High[oneKey]
-    : Low[oneKey]
+  [oneKey in Exclude<keyof Low, keyof High>]: Low[oneKey]
 } & {
   [twoKey in keyof High]: High[twoKey]
 }
