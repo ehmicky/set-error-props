@@ -23,19 +23,19 @@ each([undefined, ...SIMPLE_VALUES], ({ title }, value) => {
     t.true(setProps({ prop: value }, { prop: true }).prop)
   })
 
-  test(`Keeps to a simple value in low priority | ${title}`, (t) => {
+  test(`Keeps to a simple value with "soft" | ${title}`, (t) => {
     t.true(setProps({ prop: true }, { prop: value }, { soft: true }).prop)
   })
 })
 
 each(SIMPLE_VALUES, ({ title }, value) => {
-  test(`Keeps from a simple value in low priority | ${title}`, (t) => {
+  test(`Keeps from a simple value with "soft" | ${title}`, (t) => {
     t.is(setProps({ prop: value }, { prop: true }, { soft: true }).prop, value)
   })
 })
 
 each([{}, { prop: undefined }], ({ title }, error) => {
-  test(`Set simple values in low priority to undefined | ${title}`, (t) => {
+  test(`Set simple values to undefined with "soft" | ${title}`, (t) => {
     t.true(setProps(error, { prop: true }, { soft: true }).prop)
   })
 })

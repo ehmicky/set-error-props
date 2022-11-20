@@ -32,24 +32,34 @@ const nonEnumerableProps = Object.defineProperty({}, 'prop', {
   enumerable: false,
 })
 
-test('Non-enumerable properties are ignored', (t) => {
+test('Non-enumerable properties in second argument are ignored', (t) => {
   t.false('prop' in setProps({}, nonEnumerableProps))
 })
 
-test('Handle non-writable properties', (t) => {
-  const error = new Error('test')
-  // eslint-disable-next-line fp/no-mutating-methods
-  const nonWritableObject = Object.defineProperty(error, 'prop', {
-    value: true,
-    enumerable: true,
-    writable: false,
-    configurable: true,
-  })
-  t.true(setErrorProps(nonWritableObject, { prop: false }).prop)
+// eslint-disable-next-line fp/no-class
+class TestError extends Error {}
+// eslint-disable-next-line fp/no-mutation
+TestError.prototype.prop = true
+
+test('Inherited properties in second argument are ignored', (t) => {
+  t.false('prop' in setProps({}, new TestError('test')))
 })
 
-each([{}, { prop: undefined }], [true, false], ({ title }, error, soft) => {
-  test(`undefined values are deleted | ${title}`, (t) => {
-    t.false('prop' in setProps(error, { prop: undefined }, { soft }))
+test('Cannot pollute prototypes', (t) => {
+  const error = setProps(
+    {},
+    { name: 'test', toString: () => 'test', constructor: { name: 'test' } },
+  )
+  const proto = Object.getPrototypeOf(error)
+  const values = [error, proto]
+  values.forEach((value) => {
+    t.not(value.toString(), 'test')
+    t.not(value.name, 'test')
+    t.not(value.constructor.name, 'test')
   })
+})
+
+test('Cannot override non-Error prototypes', (t) => {
+  t.false(setErrorProps(new TestError('test'), { prop: false }).prop)
+  t.true(TestError.prototype.prop)
 })
