@@ -17,7 +17,7 @@ Properly update an error's properties.
 - [Copies](#error-copy) another error's properties
 - Can set properties as [non-enumerable](#non-enumerable-properties)
 - Preserves properties [descriptors](#descriptors) (`enumerable`, `writable`,
-  `get`/`set`)
+  `configurable`, `get`/`set`)
 - [Exception-safe](#exception-safety): this only throws syntax errors
 - Strict [TypeScript typing](/types/main.d.ts) of the return value
 
