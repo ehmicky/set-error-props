@@ -31,8 +31,10 @@ const getDescriptor = function (value, propName, own) {
 //  - Therefore the value might still be present. If so, we set an own property
 //    with `undefined` value instead
 const deleteProp = function (error, propName, descriptor) {
-  // eslint-disable-next-line fp/no-delete
-  delete error[propName]
+  try {
+    // eslint-disable-next-line fp/no-delete
+    delete error[propName]
+  } catch {}
 
   if (error[propName] !== undefined) {
     return setProp({ error, propName, propValue: undefined, descriptor })
@@ -47,6 +49,23 @@ const deleteProp = function (error, propName, descriptor) {
 const setProp = function ({ error, propName, propValue, descriptor }) {
   const enumerable = !isNonEnumerableName(propName)
 
+  try {
+    setValue({ error, propName, propValue, descriptor, enumerable })
+  } catch {}
+}
+
+// Properties starting with _* are not enumerable.
+const isNonEnumerableName = function (propName) {
+  return typeof propName === 'string' && propName.startsWith('_')
+}
+
+const setValue = function ({
+  error,
+  propName,
+  propValue,
+  descriptor,
+  enumerable,
+}) {
   if (descriptor === undefined) {
     // eslint-disable-next-line fp/no-mutating-methods
     Object.defineProperty(error, propName, {
@@ -65,9 +84,4 @@ const setProp = function ({ error, propName, propValue, descriptor }) {
     configurable: true,
   })
   error[propName] = propValue
-}
-
-// Properties starting with _* are not enumerable.
-const isNonEnumerableName = function (propName) {
-  return typeof propName === 'string' && propName.startsWith('_')
 }
