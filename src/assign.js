@@ -1,11 +1,8 @@
-import { setProp } from './set.js'
+import redefineProperty from 'redefine-property'
 
-// If the property is non-configurable, `Object.defineProperty()` cannot be used
-//  - Except if the property is inherited
-//  - Therefore, we just silently skip it
 // `undefined` values are deleted.
-// We only delete own properties, not inherited ones since that would impact
-// other objects
+//  - We only delete own properties, not inherited ones since that would impact
+//    other objects
 //  - Therefore the value might still be present. If so, we set an own property
 //    with `undefined` value instead
 export const assignProp = function (error, propName, propValue) {
@@ -21,4 +18,16 @@ export const assignProp = function (error, propName, propValue) {
   if (error[propName] !== undefined) {
     return setProp(error, propName)
   }
+}
+
+const setProp = function (error, propName, propValue) {
+  const nonEnum = getNonEnum(propName)
+  redefineProperty(error, propName, { value: propValue, ...nonEnum })
+}
+
+// Properties starting with _* are not enumerable.
+const getNonEnum = function (propName) {
+  return typeof propName === 'string' && propName.startsWith('_')
+    ? { enumerable: false }
+    : {}
 }

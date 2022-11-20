@@ -4,30 +4,32 @@ import { each } from 'test-each'
 
 import { assertDescriptor } from './helpers/main.js'
 
-each([true, false], [true, false], ({ title }, enumerable, writable) => {
-  test(`Ignore non-configurable own properties | ${title}`, (t) => {
+each([true, false], ({ title }, enumerable) => {
+  test(`Ignore non-configurable non-writable own properties | ${title}`, (t) => {
     // eslint-disable-next-line fp/no-mutating-methods
     const object = Object.defineProperty({}, 'prop', {
       value: false,
       enumerable,
-      writable,
+      writable: false,
       configurable: false,
     })
     setErrorProps(object, { prop: true })
     assertDescriptor(t, object, 'prop', {
       value: false,
       enumerable,
-      writable,
+      writable: false,
       configurable: false,
     })
   })
+})
 
-  test(`Can set non-configurable inherited properties | ${title}`, (t) => {
+each([true, false], ({ title }, enumerable) => {
+  test(`Can set non-configurable writable inherited properties | ${title}`, (t) => {
     // eslint-disable-next-line fp/no-mutating-methods
     const proto = Object.defineProperty(new Error('test'), 'prop', {
       value: false,
       enumerable,
-      writable,
+      writable: true,
       configurable: false,
     })
     // eslint-disable-next-line fp/no-mutating-methods
@@ -36,8 +38,8 @@ each([true, false], [true, false], ({ title }, enumerable, writable) => {
     assertDescriptor(t, object, 'prop', {
       value: true,
       enumerable,
-      writable,
-      configurable: true,
+      writable: true,
+      configurable: false,
     })
   })
 })
@@ -90,7 +92,7 @@ test('Handles failed deletions', (t) => {
 })
 
 test('Handles failed assignments', (t) => {
-  const proxy = getFailProxy('set')
+  const proxy = getFailProxy('defineProperty')
   setErrorProps(proxy, { prop: true })
   assertDescriptor(t, proxy, 'prop', {
     value: false,

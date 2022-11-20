@@ -67,29 +67,3 @@ each(
     })
   },
 )
-
-each(
-  [
-    { propName: 'prop', enumerable: true },
-    { propName: '_prop', enumerable: false },
-  ],
-  ({ title }, { propName, enumerable }) => {
-    test(`Keeps get/set | ${title}`, (t) => {
-      // eslint-disable-next-line fp/no-let
-      let state = false
-      const get = () => state
-
-      const set = (newState) => {
-        // eslint-disable-next-line fp/no-mutation
-        state = newState
-      }
-
-      const descriptor = { get, set, enumerable: true, configurable: true }
-      // eslint-disable-next-line fp/no-mutating-methods
-      const object = Object.defineProperty({}, propName, descriptor)
-      setErrorProps(object, { [propName]: true })
-      t.true(object[propName])
-      assertDescriptor(t, object, propName, { ...descriptor, enumerable })
-    })
-  },
-)
