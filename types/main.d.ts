@@ -20,19 +20,17 @@ export interface Options {
 }
 
 type MergeObjects<
-  One extends object,
-  Two extends object,
+  Low extends object,
+  High extends object,
   soft extends boolean,
 > = {
-  [oneKey in Exclude<keyof One, keyof Two>]: One[oneKey] extends undefined
-    ? oneKey extends keyof Two
-      ? soft extends false
-        ? Two[oneKey]
-        : One[oneKey]
-      : One[oneKey]
-    : One[oneKey]
+  [oneKey in Exclude<keyof Low, keyof High>]: oneKey extends keyof High
+    ? soft extends true
+      ? Low[oneKey]
+      : High[oneKey]
+    : Low[oneKey]
 } & {
-  [twoKey in keyof Two]: Two[twoKey]
+  [twoKey in keyof High]: High[twoKey]
 }
 
 type CoreErrorProps =
