@@ -56,22 +56,18 @@ Assigns `props` to `error`, then returns `error`.
 
 ### Options
 
-Optional object with the following properties.
-
 #### soft
 
 _Type_: `boolean`\
 _Default_: `false`
 
-Prevents overriding existing properties.
+Prevents [overriding](#overriding-protection) existing properties.
 
 # Usage
 
 ## Error core properties
 
 ```js
-import setErrorProps from 'set-error-props'
-
 const error = new Error('one')
 setErrorProps(error, { message: 'two' })
 console.log(error.message) // 'one'
@@ -131,20 +127,14 @@ console.log(error) // Prints `two` but not `_one`
 
 ```js
 const error = new Error('message')
-let propValue = { value: false }
 Object.defineProperty(error, 'prop', {
-  get() {
-    return propValue.value
-  },
-  set(value) {
-    propValue = { value }
-  },
+  value: false,
   enumerable: false,
+  writable: true,
   configurable: true,
 })
 setErrorProps(error, { prop: true })
 console.log(error.prop) // true
-console.log(propValue.value) // true
 console.log(Object.getOwnPropertyDescriptor(error, 'prop').enumerable) // false
 ```
 
