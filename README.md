@@ -82,23 +82,25 @@ console.log(error) // Prints `two` but not `_one`
 
 ## Descriptors
 
-<!-- eslint-disable fp/no-mutating-assign, fp/no-let, fp/no-get-set,
-     fp/no-mutation -->
+<!-- eslint-disable fp/no-mutating-methods, fp/no-let, fp/no-mutation -->
 
 ```js
 const error = new Error('message')
 let propValue = { value: false }
-Object.assign(error, {
-  get prop() {
+Object.defineProperty(error, 'prop', {
+  get() {
     return propValue.value
   },
-  set prop(value) {
+  set(value) {
     propValue = { value }
   },
+  enumerable: false,
+  configurable: true,
 })
 setErrorProps(error, { prop: true })
 console.log(error.prop) // true
 console.log(propValue.value) // true
+console.log(Object.getOwnPropertyDescriptor(error, 'prop').enumerable) // false
 ```
 
 # Install
