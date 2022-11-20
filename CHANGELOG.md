@@ -1,3 +1,14 @@
+# 4.0.0
+
+## Breaking changes
+
+- Properties can now be set as
+  [non-enumerable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Enumerability_and_ownership_of_properties)
+  by prefixing their name with `_`
+- Properties'
+  [descriptors](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor)
+  (`enumerable`, `writable`, `get`/`set`) are now preserved
+
 # 3.5.0
 
 ## Features

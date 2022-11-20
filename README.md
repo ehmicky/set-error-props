@@ -15,6 +15,9 @@ Properly update an error's properties.
 - Protects against [prototype pollution](#prototype-pollution)
 - Merges with either high or [low priority](#low-priority-merging)
 - [Copies](#error-copy) another error's properties
+- Can set properties as [non-enumerable](#non-enumerable-properties)
+- Preserves properties [descriptors](#descriptors) (`enumerable`, `writable`,
+  `get`/`set`)
 - Strict [TypeScript typing](/types/main.d.ts) of the return value
 
 # Examples
@@ -59,6 +62,43 @@ secondError.prop = true
 setErrorProps(error, secondError)
 console.log(error.message) // 'one'
 console.log(error.prop) // true
+```
+
+## Non-enumerable properties
+
+<!-- eslint-disable fp/no-mutation, no-underscore-dangle -->
+
+```js
+const error = new Error('message')
+
+// Properties that start with `_` are not enumerable
+setErrorProps(error, { _one: true, two: true })
+
+console.log(error._one) // true
+console.log(error.two) // true
+console.log(Object.keys(error)) // ['two']
+console.log(error) // Prints `two` but not `_one`
+```
+
+## Descriptors
+
+<!-- eslint-disable fp/no-mutating-assign, fp/no-let, fp/no-get-set,
+     fp/no-mutation -->
+
+```js
+const error = new Error('message')
+let propValue = { value: false }
+Object.assign(error, {
+  get prop() {
+    return propValue.value
+  },
+  set prop(value) {
+    propValue = { value }
+  },
+})
+setErrorProps(error, { prop: true })
+console.log(error.prop) // true
+console.log(propValue.value) // true
 ```
 
 # Install
