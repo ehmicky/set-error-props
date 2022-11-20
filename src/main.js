@@ -1,6 +1,6 @@
 import { assignProp } from './assign.js'
 import { normalizeOptions } from './options.js'
-import { shouldSkipProp, shouldSkipValue } from './skip.js'
+import { shouldSkipProp } from './skip.js'
 
 // Merge error properties.
 export default function setErrorProps(error, props, opts) {
@@ -8,28 +8,18 @@ export default function setErrorProps(error, props, opts) {
 
   // eslint-disable-next-line fp/no-loops
   for (const propName of Reflect.ownKeys(props)) {
-    mergeProp({ error, props, propName, soft })
+    setErrorProp({ error, props, propName, soft })
   }
 
   return error
 }
 
-// Just like `Object.assign()`:
-//  - Inherited or non-enumerable properties are ignored
-//  - Symbol properties are not ignored
 // We do not deep merge as:
 //  - This ensures the outer error overrides inner errors properties, since
 //    those are likely to be specific to the inner error, e.g. to its class
 //  - Users can deep merge using manual logic instead
-const mergeProp = function ({ error, props, propName, soft }) {
-  if (
-    shouldSkipProp(props, propName) ||
-    shouldSkipValue(soft, error[propName])
-  ) {
-    return
-  }
-
-  try {
+const setErrorProp = function ({ error, props, propName, soft }) {
+  if (!shouldSkipProp({ error, props, propName, soft })) {
     assignProp(error, propName, props[propName])
-  } catch {}
+  }
 }

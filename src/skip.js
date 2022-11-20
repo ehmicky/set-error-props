@@ -1,13 +1,19 @@
-// Do not override core error properties
-export const shouldSkipProp = function (props, propName) {
+// Do not override core error properties.
+// Just like `Object.assign()`:
+//  - Inherited or non-enumerable properties are ignored
+//  - Symbol properties are not ignored
+// When `soft`, values are not set if already set in `error`.
+export const shouldSkipProp = function ({ error, props, propName, soft }) {
   return (
-    propName in CHECK_ERROR ||
-    IGNORED_PROPS.has(propName) ||
-    !isEnum.call(props, propName)
+    isIgnoredPropName(propName) ||
+    !isEnum.call(props, propName) ||
+    (soft && error[propName] !== undefined)
   )
 }
 
-const { propertyIsEnumerable: isEnum } = Object.prototype
+const isIgnoredPropName = function (propName) {
+  return propName in CHECK_ERROR || IGNORED_PROPS.has(propName)
+}
 
 // Uses `key in error` to handle any current and future error|object properties
 // This also help handle non-standard properties like `error.lineNumber`
@@ -18,7 +24,4 @@ const CHECK_ERROR = new Error('check')
 // `prototype`
 const IGNORED_PROPS = new Set(['prototype', 'errors', 'cause'])
 
-// When `soft`, values are not set if already set in `error`.
-export const shouldSkipValue = function (soft, errorValue) {
-  return soft && errorValue !== undefined
-}
+const { propertyIsEnumerable: isEnum } = Object.prototype
