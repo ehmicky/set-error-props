@@ -23,7 +23,5 @@ const IGNORED_PROPS = new Set(['prototype', 'errors', 'cause'])
 // When `soft`, values are not set if already set in `error`.
 export const shouldSetValue = function (errorValue, propValue, soft) {
   const hasDifferentValue = propValue !== errorValue
-  return soft
-    ? hasDifferentValue && errorValue === undefined
-    : hasDifferentValue || propValue === undefined
+  return soft ? hasDifferentValue && errorValue === undefined : true
 }

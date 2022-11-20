@@ -48,29 +48,6 @@ test('Handle non-writable properties', (t) => {
   t.true(setErrorProps(nonWritableObject, { prop: false }).prop)
 })
 
-const getProxyObject = function () {
-  const error = new Error('test')
-  error.changed = false
-  // eslint-disable-next-line fp/no-mutating-methods
-  return Object.defineProperty(error, 'prop', {
-    get() {
-      return 'prop'
-    },
-    set(value) {
-      // eslint-disable-next-line fp/no-mutation, fp/no-this
-      this.changed = value
-    },
-  })
-}
-
-test('Sets value is different', (t) => {
-  t.true(setErrorProps(getProxyObject(), { prop: true }).changed)
-})
-
-test('Does not set value is identical', (t) => {
-  t.false(setErrorProps(getProxyObject(), { prop: 'prop' }).changed)
-})
-
 each([true, false], ({ title }, soft) => {
   test(`undefined values are deleted not set | ${title}`, (t) => {
     t.false('prop' in setProps({}, { prop: undefined }, { soft }))
