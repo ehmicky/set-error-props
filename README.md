@@ -13,7 +13,7 @@ Properly update an error's properties.
 - Prevents overriding [error core properties](#error-core-properties) (`name`,
   `message`, etc.)
 - Protects against [prototype pollution](#prototype-pollution)
-- Merges with either high or [low priority](#low-priority-merging)
+- Prevents overriding [existing properties](#overriding-protection)
 - [Copies](#error-copy) another error's properties
 - Can set properties as [non-enumerable](#non-enumerable-properties)
 - Preserves properties [descriptors](#descriptors) (`enumerable`, `writable`,
@@ -63,7 +63,7 @@ Optional object with the following properties.
 _Type_: `boolean`\
 _Default_: `false`
 
-Whether `props` should have lower merging priority over `error` or not.
+Prevents overriding existing properties.
 
 # Usage
 
@@ -86,7 +86,7 @@ console.log(error.toString()) // 'Error: one'
 console.log(Error.prototype.toString()) // 'Error'
 ```
 
-## Low priority merging
+## Overriding protection
 
 ```js
 const error = new Error('message')
