@@ -19,11 +19,8 @@ export interface Options {
   readonly soft?: boolean
 }
 
-type MergeObjects<Low extends object, High extends object> = {
-  [oneKey in Exclude<keyof Low, keyof High>]: Low[oneKey]
-} & {
-  [twoKey in keyof High]: High[twoKey]
-}
+type MergeObjects<Low extends object, High extends object> = High &
+  Omit<Low, keyof High>
 
 type CoreErrorProps =
   | 'name'
