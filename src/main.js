@@ -26,14 +26,13 @@ const mergeProp = function ({ error, props, propName, soft }) {
   }
 
   const errorValue = error[propName]
-  const propValue = props[propName]
 
-  if (shouldSkipValue(errorValue, propValue, soft)) {
+  if (shouldSkipValue(soft, errorValue)) {
     return
   }
 
   try {
-    setProp(error, propName, propValue)
+    setProp(error, propName, props[propName])
   } catch {}
 }
 

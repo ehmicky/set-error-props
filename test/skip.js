@@ -48,19 +48,8 @@ test('Handle non-writable properties', (t) => {
   t.true(setErrorProps(nonWritableObject, { prop: false }).prop)
 })
 
-each([true, false], ({ title }, soft) => {
-  test(`undefined values are deleted not set | ${title}`, (t) => {
-    t.false('prop' in setProps({}, { prop: undefined }, { soft }))
+each([{}, { prop: undefined }], [true, false], ({ title }, error, soft) => {
+  test(`undefined values are deleted | ${title}`, (t) => {
+    t.false('prop' in setProps(error, { prop: undefined }, { soft }))
   })
-})
-
-test('Delete undefined if high priority', (t) => {
-  t.false('prop' in setProps({ prop: undefined }, { prop: undefined }))
-})
-
-test('Does not delete undefined if low priority', (t) => {
-  t.true(
-    'prop' in
-      setProps({ prop: undefined }, { prop: undefined }, { soft: true }),
-  )
 })

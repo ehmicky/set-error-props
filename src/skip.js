@@ -18,9 +18,7 @@ const CHECK_ERROR = new Error('check')
 // `prototype`
 const IGNORED_PROPS = new Set(['prototype', 'errors', 'cause'])
 
-// `undefined` values are deleted, so we keep those even when `error[propName]`
-// is `undefined`.
 // When `soft`, values are not set if already set in `error`.
-export const shouldSkipValue = function (errorValue, propValue, soft) {
-  return soft && (propValue === errorValue || errorValue !== undefined)
+export const shouldSkipValue = function (soft, errorValue) {
+  return soft && errorValue !== undefined
 }
