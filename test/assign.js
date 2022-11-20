@@ -3,10 +3,15 @@ import test from 'ava'
 import setErrorProps from 'set-error-props'
 import { each } from 'test-each'
 
+// eslint-disable-next-line max-params
+const assertDescriptor = function (t, object, propName, descriptor) {
+  t.deepEqual(Object.getOwnPropertyDescriptor(object, propName), descriptor)
+}
+
 test('Can set missing properties', (t) => {
   const object = {}
   setErrorProps(object, { prop: true })
-  t.deepEqual(Object.getOwnPropertyDescriptor(object, 'prop'), {
+  assertDescriptor(t, object, 'prop', {
     value: true,
     enumerable: true,
     writable: true,
@@ -17,7 +22,7 @@ test('Can set missing properties', (t) => {
 test('Can set missing private properties', (t) => {
   const object = {}
   setErrorProps(object, { _prop: true })
-  t.deepEqual(Object.getOwnPropertyDescriptor(object, '_prop'), {
+  assertDescriptor(t, object, '_prop', {
     value: true,
     enumerable: false,
     writable: true,
@@ -35,7 +40,7 @@ each([true, false], [true, false], ({ title }, enumerable, writable) => {
       configurable: false,
     })
     setErrorProps(object, { prop: true })
-    t.deepEqual(Object.getOwnPropertyDescriptor(object, 'prop'), {
+    assertDescriptor(t, object, 'prop', {
       value: false,
       enumerable,
       writable,
@@ -54,7 +59,7 @@ each([true, false], [true, false], ({ title }, enumerable, writable) => {
     // eslint-disable-next-line fp/no-mutating-methods
     const object = Object.setPrototypeOf({}, proto)
     setErrorProps(object, { prop: true })
-    t.deepEqual(Object.getOwnPropertyDescriptor(object, 'prop'), {
+    assertDescriptor(t, object, 'prop', {
       value: true,
       enumerable,
       writable,
@@ -73,18 +78,22 @@ each([{}, { prop: undefined }], [true, false], ({ title }, error, soft) => {
   })
 })
 
-test('Handles failed deletions', (t) => {
+const getFailProxy = function (proxyProp) {
   // eslint-disable-next-line fp/no-proxy
-  const proxy = new Proxy(
+  return new Proxy(
     { prop: false },
     {
-      deleteProperty() {
+      [proxyProp]() {
         throw new Error('unsafe')
       },
     },
   )
+}
+
+test('Handles failed deletions', (t) => {
+  const proxy = getFailProxy('deleteProperty')
   setErrorProps(proxy, { prop: undefined })
-  t.deepEqual(Object.getOwnPropertyDescriptor(proxy, 'prop'), {
+  assertDescriptor(t, proxy, 'prop', {
     value: undefined,
     enumerable: true,
     writable: true,
@@ -93,17 +102,9 @@ test('Handles failed deletions', (t) => {
 })
 
 test('Handles failed assignments', (t) => {
-  // eslint-disable-next-line fp/no-proxy
-  const proxy = new Proxy(
-    { prop: false },
-    {
-      set() {
-        throw new Error('unsafe')
-      },
-    },
-  )
+  const proxy = getFailProxy('set')
   setErrorProps(proxy, { prop: true })
-  t.deepEqual(Object.getOwnPropertyDescriptor(proxy, 'prop'), {
+  assertDescriptor(t, proxy, 'prop', {
     value: false,
     enumerable: true,
     writable: true,
@@ -117,7 +118,7 @@ test('Cannot delete but can reset inherited properties', (t) => {
   // eslint-disable-next-line fp/no-mutating-methods
   const object = Object.setPrototypeOf({}, proto)
   setErrorProps(object, { prop: undefined })
-  t.deepEqual(Object.getOwnPropertyDescriptor(object, 'prop'), {
+  assertDescriptor(t, object, 'prop', {
     value: undefined,
     enumerable: true,
     writable: true,
@@ -156,7 +157,7 @@ each(
         ...oldDescriptor,
       })
       setErrorProps(object, { [propName]: true })
-      t.deepEqual(Object.getOwnPropertyDescriptor(object, propName), {
+      assertDescriptor(t, object, propName, {
         value: true,
         enumerable: true,
         writable: true,
@@ -188,10 +189,7 @@ each(
       const object = Object.defineProperty({}, propName, descriptor)
       setErrorProps(object, { [propName]: true })
       t.true(object[propName])
-      t.deepEqual(Object.getOwnPropertyDescriptor(object, propName), {
-        ...descriptor,
-        enumerable,
-      })
+      assertDescriptor(t, object, propName, { ...descriptor, enumerable })
     })
   },
 )
