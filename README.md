@@ -113,6 +113,8 @@ Whether `props` should have lower merging priority over `error` or not.
   update an error's class
 - [`set-error-message`](https://github.com/ehmicky/set-error-message): Properly
   update an error's message
+- [`set-error-stack`](https://github.com/ehmicky/set-error-stack): Properly
+  update an error's stack
 - [`merge-error-cause`](https://github.com/ehmicky/merge-error-cause): Merge an
   error with its `cause`
 - [`error-cause-polyfill`](https://github.com/ehmicky/error-cause-polyfill):
