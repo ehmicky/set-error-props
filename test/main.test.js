@@ -2,7 +2,7 @@ import test from 'ava'
 import setErrorProps from 'set-error-props'
 import { each } from 'test-each'
 
-import { setProps, getError } from './helpers/main.js'
+import { setProps, getError } from './helpers/main.test.js'
 
 each([new Error('test'), {}], ({ title }, error) => {
   test(`Returns the first argument as is | ${title}`, (t) => {

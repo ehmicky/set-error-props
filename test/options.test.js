@@ -2,7 +2,7 @@ import test from 'ava'
 import setErrorProps from 'set-error-props'
 import { each } from 'test-each'
 
-import { setProps } from './helpers/main.js'
+import { setProps } from './helpers/main.test.js'
 
 const NOT_PLAIN_OBJECTS = [null, '', new Set([]), () => {}]
 each([...NOT_PLAIN_OBJECTS, undefined], ({ title }, invalidValue) => {

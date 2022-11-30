@@ -1,7 +1,7 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { setProps } from './helpers/main.js'
+import { setProps } from './helpers/main.test.js'
 
 const SIMPLE_VALUES = [
   null,
