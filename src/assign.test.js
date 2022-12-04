@@ -1,6 +1,7 @@
 import test from 'ava'
-import setErrorProps from 'set-error-props'
 import { each } from 'test-each'
+
+import setErrorProps from 'set-error-props'
 
 // eslint-disable-next-line max-params
 const assertDescriptor = function (t, object, propName, descriptor) {

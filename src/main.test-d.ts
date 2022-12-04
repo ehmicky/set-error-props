@@ -1,6 +1,6 @@
 import { expectType, expectAssignable, expectNotAssignable } from 'tsd'
 
-import setErrorProps, { Options } from 'set-error-props'
+import setErrorProps, { type Options } from 'set-error-props'
 
 const error = new Error('test')
 expectAssignable<Error>(setErrorProps(error, {}))
