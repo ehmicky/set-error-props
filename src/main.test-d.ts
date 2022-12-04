@@ -1,9 +1,4 @@
-import {
-  expectType,
-  expectAssignable,
-  expectNotAssignable,
-  expectError,
-} from 'tsd'
+import { expectType, expectAssignable, expectNotAssignable } from 'tsd'
 
 import setErrorProps, { Options } from 'set-error-props'
 
@@ -14,13 +9,15 @@ setErrorProps(error, error)
 setErrorProps(error, {})
 setErrorProps({}, error)
 expectAssignable<{ a: 1 }>(setErrorProps({ a: 1 } as const, {}))
-expectError(setErrorProps(undefined, error))
+// @ts-expect-error
+setErrorProps(undefined, error)
 
 setErrorProps(error, {}, {})
 expectAssignable<Options>({})
 setErrorProps(error, {}, { soft: true })
 expectAssignable<Options>({ soft: true })
-expectError(setErrorProps(error, {}, { soft: 'true' }))
+// @ts-expect-error
+setErrorProps(error, {}, { soft: 'true' })
 expectNotAssignable<Options>({ soft: 'true' })
 
 expectType<1>(setErrorProps({ a: 0 } as const, { a: 1 } as const).a)
