@@ -4,7 +4,7 @@ import { each } from 'test-each'
 import setErrorProps from 'set-error-props'
 
 // eslint-disable-next-line max-params
-const assertDescriptor = function (t, object, propName, descriptor) {
+const assertDescriptor = (t, object, propName, descriptor) => {
   t.deepEqual(Object.getOwnPropertyDescriptor(object, propName), descriptor)
 }
 
@@ -37,7 +37,7 @@ test('Handles failed deletions', (t) => {
   const proxy = new Proxy(
     { prop: false },
     {
-      deleteProperty() {
+      deleteProperty: () => {
         throw new Error('unsafe')
       },
     },

@@ -145,10 +145,10 @@ console.log(Object.getOwnPropertyDescriptor(error, 'prop').enumerable) // false
 
 ```js
 const error = new Proxy(new Error('message'), {
-  set() {
+  set: () => {
     throw new Error('example')
   },
-  defineProperty() {
+  defineProperty: () => {
     throw new Error('example')
   },
 })

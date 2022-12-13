@@ -4,7 +4,7 @@ import isPlainObj from 'is-plain-obj'
 // Normalize and validate `props` and `options`.
 // Invalid `error` are normalized but do not throw since they might be outside
 // of the user's control, unlike `props` and `options`.
-export const normalizeOptions = function (error, props, opts = {}) {
+export const normalizeOptions = (error, props, opts = {}) => {
   validateErrorOrObject(error, 'First argument')
   validateErrorOrObject(props, 'Second argument')
 
@@ -21,7 +21,7 @@ export const normalizeOptions = function (error, props, opts = {}) {
   return { soft }
 }
 
-const validateErrorOrObject = function (value, prefix) {
+const validateErrorOrObject = (value, prefix) => {
   if (value === undefined) {
     throw new TypeError(`${prefix} is required.`)
   }
@@ -33,6 +33,4 @@ const validateErrorOrObject = function (value, prefix) {
   }
 }
 
-const isErrorOrObject = function (value) {
-  return isPlainObj(value) || isErrorInstance(value)
-}
+const isErrorOrObject = (value) => isPlainObj(value) || isErrorInstance(value)

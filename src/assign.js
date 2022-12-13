@@ -5,7 +5,7 @@ import redefineProperty from 'redefine-property'
 //    other objects
 //  - Therefore the value might still be present. If so, we set an own property
 //    with `undefined` value instead
-export const assignProp = function (error, propName, propValue) {
+export const assignProp = (error, propName, propValue) => {
   if (propValue !== undefined) {
     return setProp(error, propName, propValue)
   }
@@ -20,14 +20,13 @@ export const assignProp = function (error, propName, propValue) {
   }
 }
 
-const setProp = function (error, propName, propValue) {
+const setProp = (error, propName, propValue) => {
   const nonEnum = getNonEnum(propName)
   redefineProperty(error, propName, { value: propValue, ...nonEnum })
 }
 
 // Properties starting with _* are not enumerable.
-const getNonEnum = function (propName) {
-  return typeof propName === 'string' && propName.startsWith('_')
+const getNonEnum = (propName) =>
+  typeof propName === 'string' && propName.startsWith('_')
     ? { enumerable: false }
     : {}
-}

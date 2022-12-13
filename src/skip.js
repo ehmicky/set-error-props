@@ -3,17 +3,13 @@
 //  - Inherited or non-enumerable properties are ignored
 //  - Symbol properties are not ignored
 // When `soft`, values are not set if already set in `error`.
-export const shouldSkipProp = function ({ error, props, propName, soft }) {
-  return (
-    isIgnoredPropName(propName) ||
-    !isEnum.call(props, propName) ||
-    (soft && error[propName] !== undefined)
-  )
-}
+export const shouldSkipProp = ({ error, props, propName, soft }) =>
+  isIgnoredPropName(propName) ||
+  !isEnum.call(props, propName) ||
+  (soft && error[propName] !== undefined)
 
-const isIgnoredPropName = function (propName) {
-  return propName in CHECK_ERROR || IGNORED_PROPS.has(propName)
-}
+const isIgnoredPropName = (propName) =>
+  propName in CHECK_ERROR || IGNORED_PROPS.has(propName)
 
 // Uses `key in error` to handle any current and future error|object properties
 // This also help handle non-standard properties like `error.lineNumber`
