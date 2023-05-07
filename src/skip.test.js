@@ -1,9 +1,9 @@
 import test from 'ava'
+import setErrorProps from 'set-error-props'
 import { each } from 'test-each'
 
 import { setProps } from './helpers/main.test.js'
 
-import setErrorProps from 'set-error-props'
 
 each(
   [
