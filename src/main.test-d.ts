@@ -1,5 +1,6 @@
-import setErrorProps, { type Options } from 'set-error-props'
 import { expectType, expectAssignable, expectNotAssignable } from 'tsd'
+
+import setErrorProps, { type Options } from 'set-error-props'
 
 const error = new Error('test')
 expectAssignable<Error>(setErrorProps(error, {}))
@@ -64,10 +65,12 @@ expectType<'0'>(
     .name,
 )
 expectAssignable<() => '0'>(
+  // eslint-disable-next-line @typescript-eslint/unbound-method
   setErrorProps({} as Error & { toString: () => '0' }, { toString: () => '1' })
     .toString,
 )
 expectAssignable<() => '0'>(
+  // eslint-disable-next-line @typescript-eslint/unbound-method
   setErrorProps(
     {} as Error & { toString: () => '0' },
     { toString: () => '1' },
