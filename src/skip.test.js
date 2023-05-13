@@ -4,7 +4,6 @@ import { each } from 'test-each'
 
 import { setProps } from './helpers/main.test.js'
 
-
 each(
   [
     'name',

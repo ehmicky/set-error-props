@@ -4,7 +4,6 @@ import { each } from 'test-each'
 
 import { setProps, getError } from './helpers/main.test.js'
 
-
 each([new Error('test'), {}], ({ title }, error) => {
   test(`Returns the first argument as is | ${title}`, (t) => {
     t.is(setErrorProps(error, {}), error)

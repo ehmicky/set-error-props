@@ -2,7 +2,6 @@ import test from 'ava'
 import setErrorProps from 'set-error-props'
 import { each } from 'test-each'
 
-
 // eslint-disable-next-line max-params
 const assertDescriptor = (t, object, propName, descriptor) => {
   t.deepEqual(Object.getOwnPropertyDescriptor(object, propName), descriptor)

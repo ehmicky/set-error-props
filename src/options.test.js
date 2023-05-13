@@ -4,7 +4,6 @@ import { each } from 'test-each'
 
 import { setProps } from './helpers/main.test.js'
 
-
 const NOT_PLAIN_OBJECTS = [null, '', new Set([]), () => {}]
 each([...NOT_PLAIN_OBJECTS, undefined], ({ title }, invalidValue) => {
   test(`Throws if the first argument is invalid | ${title}`, (t) => {
