@@ -42,7 +42,10 @@
   ],
   "license": "MIT",
   "homepage": "https://www.github.com/ehmicky/set-error-props",
-  "repository": "ehmicky/set-error-props",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ehmicky/set-error-props.git"
+  },
   "bugs": {
     "url": "https://github.com/ehmicky/set-error-props/issues"
   },
