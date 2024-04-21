@@ -65,12 +65,10 @@ expectType<'0'>(
     .name,
 )
 expectAssignable<() => '0'>(
-  // eslint-disable-next-line @typescript-eslint/unbound-method
   setErrorProps({} as Error & { toString: () => '0' }, { toString: () => '1' })
     .toString,
 )
 expectAssignable<() => '0'>(
-  // eslint-disable-next-line @typescript-eslint/unbound-method
   setErrorProps(
     {} as Error & { toString: () => '0' },
     { toString: () => '1' },
