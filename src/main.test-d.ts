@@ -1,4 +1,4 @@
-import { expectType, expectAssignable, expectNotAssignable } from 'tsd'
+import { expectAssignable, expectNotAssignable, expectType } from 'tsd'
 
 import setErrorProps, { type Options } from 'set-error-props'
 
