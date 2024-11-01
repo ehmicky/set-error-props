@@ -28,6 +28,7 @@ each(
   },
 )
 
+// eslint-disable-next-line fp/no-mutating-methods
 const nonEnumerableProps = Object.defineProperty({}, 'prop', {
   value: true,
   enumerable: false,

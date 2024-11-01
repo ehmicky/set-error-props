@@ -21,6 +21,7 @@ each([{}, { prop: undefined }], [true, false], ({ title }, error, soft) => {
 test('Cannot delete but can reset inherited properties', (t) => {
   // eslint-disable-next-line fp/no-mutating-assign
   const proto = Object.assign(new Error('test'), { prop: false })
+  // eslint-disable-next-line fp/no-mutating-methods
   const object = Object.setPrototypeOf({}, proto)
   setErrorProps(object, { prop: undefined })
   assertDescriptor(t, object, 'prop', {
@@ -83,6 +84,7 @@ each(
   // eslint-disable-next-line max-params
   ({ title }, oldDescriptor, newDescriptor, propName) => {
     test(`Can set properties with different descriptors | ${title}`, (t) => {
+      // eslint-disable-next-line fp/no-mutating-methods
       const object = Object.defineProperty({}, propName, {
         value: false,
         enumerable: true,
